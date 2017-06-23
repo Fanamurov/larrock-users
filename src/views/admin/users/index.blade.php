@@ -6,7 +6,6 @@
         <div class="add-panel uk-margin-bottom uk-text-right">
             <a class="uk-button" href="#modal-help" data-uk-modal="{target:'#modal-help'}"><i class="uk-icon-question"></i></a>
             <a class="uk-button uk-button-primary" href="/admin/{{ $app->name }}/create">Добавить пользователя</a>
-            <a class="uk-button uk-button-primary uk-hidden" href="{{ action('Admin\AdminRolesController@index') }}">Управление ролями</a>
         </div>
         <div id="modal-help" class="uk-modal">
             <div class="uk-modal-dialog">
@@ -29,8 +28,10 @@
                         <th style="width: 90px">{{ $row->title }}</th>
                     @endif
                 @endforeach
-                <th width="80">Заказы</th>
-                <th width="120">Сумма покупок</th>
+                @if($enable_cart)
+                    <th width="80">Заказы</th>
+                    <th width="120">Сумма покупок</th>
+                @endif
                 <th width="80">Роль</th>
                 <th width="70"></th>
                 <th width="90"></th>
@@ -67,16 +68,18 @@
                             </td>
                         @endif
                     @endforeach
-                    <td>
-                        {{ count($data_value->orders) }}
-                    </td>
-                    <td>
-                        @php($cost = 0)
-                        @foreach($data_value->orders as $order)
-                            @php($cost += $order->cost)
-                        @endforeach
-                        <a target="_blank" href="/admin/search?text={{ $data_value->email }}">{{ $cost }} руб.</a>
-                    </td>
+                    @if($enable_cart)
+                        <td>
+                            {{ count($data_value->cart) }}
+                        </td>
+                        <td>
+                            @php($cost = 0)
+                            @foreach($data_value->cart as $order)
+                                @php($cost += $order->cost)
+                            @endforeach
+                            <a target="_blank" href="/admin/search?text={{ $data_value->email }}">{{ $cost }} руб.</a>
+                        </td>
+                    @endif
                     <td>
                         @if(count($data_value->role) > 0)
                             <span class="uk-badge">{{ $data_value->role->first()->slug }}</span>

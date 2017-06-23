@@ -7,7 +7,7 @@ use Larrock\Core\Helpers\FormBuilder\FormInput;
 use Larrock\Core\Helpers\FormBuilder\FormPassword;
 use Larrock\Core\Helpers\FormBuilder\FormTagsRole;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
-use App\Models\Roles;
+use Larrock\ComponentUsers\Models\Roles;
 use Larrock\ComponentUsers\Models\User;
 
 class UsersComponent extends Component

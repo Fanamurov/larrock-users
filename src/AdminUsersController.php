@@ -3,7 +3,7 @@
 namespace Larrock\ComponentUsers;
 
 use Alert;
-use App\User;
+use Larrock\ComponentUsers\Models\User;
 use Larrock\Core\Component;
 //use Ultraware\Roles\Models\Role;
 use Breadcrumbs;
@@ -19,10 +19,10 @@ use View;
 
 class AdminUsersController extends Controller
 {
-	protected $config;
+    protected $config;
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         $Component = new UsersComponent();
         $this->config = $Component->shareConfig();
 
@@ -30,7 +30,7 @@ class AdminUsersController extends Controller
         Breadcrumbs::register('admin.'. $this->config->name .'.index', function($breadcrumbs){
             $breadcrumbs->push($this->config->title, '/admin/'. $this->config->name);
         });
-	}
+    }
 
     /**
      * Display a listing of the resource.
@@ -39,8 +39,14 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-		$users = User::with('role', 'orders')->paginate(15);
-		return view('larrock::admin.users.index', array('data' => $users));
+        $with = ['role'];
+        $enable_cart = null;
+        if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')){
+            $with[] = 'cart';
+            $enable_cart = true;
+        }
+        $users = User::with($with)->paginate(15);
+        return view('larrock::admin.users.index', array('data' => $users, 'enable_cart' => $enable_cart));
     }
 
     /**
@@ -57,7 +63,7 @@ class AdminUsersController extends Controller
             $breadcrumbs->push('Создание');
         });
 
-		return view('larrock::admin.admin-builder.create', $data);
+        return view('larrock::admin.admin-builder.create', $data);
     }
 
     /**
@@ -107,7 +113,7 @@ class AdminUsersController extends Controller
             $breadcrumbs->parent('admin.'. $this->config->name .'.index');
             $breadcrumbs->push($data->email);
         });
-		return view('larrock::admin.admin-builder.edit', $data);
+        return view('larrock::admin.admin-builder.edit', $data);
     }
 
     /**
@@ -124,25 +130,25 @@ class AdminUsersController extends Controller
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
 
-		$user = User::whereId($id)->first();
-		$user->detachAllRoles();
-		$user->attachRole($request->get('role'));
+        $user = User::whereId($id)->first();
+        $user->detachAllRoles();
+        $user->attachRole($request->get('role'));
 
-		$submit = $request->all();
-		if($submit['password'] !== $user->password){
-			$submit['password'] = bcrypt($submit['password']);
-		}else{
-			unset($submit['password']);
-		}
+        $submit = $request->all();
+        if($submit['password'] !== $user->password){
+            $submit['password'] = bcrypt($submit['password']);
+        }else{
+            unset($submit['password']);
+        }
 
-		if($user->update($submit)){
-			Alert::add('successAdmin', 'Пользователь изменен')->flash();
+        if($user->update($submit)){
+            Alert::add('successAdmin', 'Пользователь изменен')->flash();
             \Cache::flush();
-		}else{
-			Alert::add('errorAdmin', 'Не удалось изменить пользователя')->flash();
-		}
+        }else{
+            Alert::add('errorAdmin', 'Не удалось изменить пользователя')->flash();
+        }
 
-		return back()->withInput();
+        return back()->withInput();
     }
 
     /**
@@ -154,7 +160,7 @@ class AdminUsersController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-		if($user = User::whereId($id)->first()){
+        if($user = User::whereId($id)->first()){
             $user->detachAllRoles();
 
             if($user->delete()){

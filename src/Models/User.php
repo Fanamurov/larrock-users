@@ -1,8 +1,7 @@
 <?php
 namespace Larrock\ComponentUsers\Models;
 
-use App\Models\Cart;
-use App\Models\Orders;
+use Larrock\ComponentCart\Models\Cart;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -65,7 +64,7 @@ use Larrock\ComponentUsers;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMediaConversions
 {
-	use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
+    use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
 
     use HasMediaTrait;
 
@@ -92,33 +91,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->performOnCollections('photo');
     }
 
-	protected $table = 'users';
+    protected $table = 'users';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = [
-		'first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel'
-	];
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password', 'remember_token',
-	];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel'
+    ];
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
-	public function role()
-	{
-		return $this->belongsToMany('Ultraware\Roles\Models\Role', 'role_user', 'user_id', 'role_id');
-	}
-
-    public function orders()
+    public function role()
     {
-        return $this->hasMany(Orders::class, 'user_id', 'id')->orderBy('updated_at', 'desc');
+        return $this->belongsToMany('Ultraware\Roles\Models\Role', 'role_user', 'user_id', 'role_id');
     }
 
     public function cart()
