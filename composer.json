@@ -24,6 +24,6 @@
         "socialiteproviders/twitter": "^3.0",
         "socialiteproviders/vkontakte": "^3.0",
         "socialiteproviders/yandex": "^3.0",
-        "ultraware/roles": "^5.4",
+        "ultraware/roles": "^5.4"
     }
 }
