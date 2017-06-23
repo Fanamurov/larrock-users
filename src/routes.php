@@ -2,11 +2,24 @@
 
 use Larrock\ComponentUsers\AdminUsersController;
 use Larrock\ComponentUsers\UserController;
+use Larrock\ComponentUsers\LoginController;
 
 Route::group(['middleware' => ['web', 'AddMenuFront', 'GetSeo', 'AddBlocksTemplate']], function(){
     // Authentication routes...
-    Route::auth();
-    Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('login', LoginController::class .'@showLoginForm')->name('login');
+    Route::post('login', LoginController::class .'@login');
+    Route::post('logout', LoginController::class .'@logout')->name('logout');
+    Route::get('/logout', LoginController::class .'@logout');
+
+    // Registration Routes...
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'Auth\RegisterController@register');
+
+    // Password Reset Routes...
+    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
     Route::get(
         '/socialite/{provider}', [
