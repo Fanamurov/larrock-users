@@ -1,0 +1,29 @@
+{
+    "name": "fanamurov/larrock-users",
+    "description": "Users component for larrockCMS",
+    "type": "library",
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Alexandr Fanamurov",
+            "email": "fanamurov@ya.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Larrock\\ComponentUsers\\": "src",
+            "Larrock\\ComponentUsers\\Models\\": "src/Models"
+        }
+    },
+    "require": {
+        "fanamurov/larrock-core": "^0.1",
+        "laravel/socialite": "^3.0",
+        "jhaoda/socialite-odnoklassniki": "^3.0",
+        "socialiteproviders/google": "^3.0",
+        "socialiteproviders/instagram": "^3.0",
+        "socialiteproviders/twitter": "^3.0",
+        "socialiteproviders/vkontakte": "^3.0",
+        "socialiteproviders/yandex": "^3.0",
+        "ultraware/roles": "^5.4",
+    }
+}
