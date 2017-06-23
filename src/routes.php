@@ -4,7 +4,15 @@ use Larrock\ComponentUsers\AdminUsersController;
 use Larrock\ComponentUsers\UserController;
 use Larrock\ComponentUsers\LoginController;
 
-Route::group(['middleware' => ['web', 'AddMenuFront', 'GetSeo', 'AddBlocksTemplate']], function(){
+$middleware = ['web', 'GetSeo'];
+if(file_exists(base_path(). '/vendor/fanamurov/larrock-menu')){
+    $middleware[] = 'AddMenuFront';
+}
+if(file_exists(base_path(). '/vendor/fanamurov/larrock-blocks')){
+    $middleware[] = 'AddBlocksTemplate';
+}
+
+Route::group(['middleware' => $middleware], function(){
     // Authentication routes...
     Route::get('login', LoginController::class .'@showLoginForm')->name('login');
     Route::post('login', LoginController::class .'@login');
