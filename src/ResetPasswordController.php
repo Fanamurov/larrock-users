@@ -29,4 +29,11 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function showResetForm(Request $request, $token = null)
+    {
+        return view('larrock::admin.auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
 }

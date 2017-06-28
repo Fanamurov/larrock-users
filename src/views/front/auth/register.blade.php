@@ -59,5 +59,5 @@
     </form>
 </div>
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\RegisterRequest', '#form-register') !!}
+{!! JsValidator::formRequest('Larrock\ComponentUsers\Requests\RegisterRequest', '#form-register') !!}
 @endpush

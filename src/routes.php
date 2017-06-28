@@ -3,6 +3,9 @@
 use Larrock\ComponentUsers\AdminUsersController;
 use Larrock\ComponentUsers\UserController;
 use Larrock\ComponentUsers\LoginController;
+use Larrock\ComponentUsers\RegisterController;
+use Larrock\ComponentUsers\ForgotPasswordController;
+use Larrock\ComponentUsers\ResetPasswordController;
 
 $middleware = ['web', 'GetSeo'];
 if(file_exists(base_path(). '/vendor/fanamurov/larrock-menu')){
@@ -13,21 +16,22 @@ if(file_exists(base_path(). '/vendor/fanamurov/larrock-blocks')){
 }
 
 Route::group(['middleware' => $middleware], function(){
-    // Authentication routes...
+    /*// Authentication routes...
     Route::get('login', LoginController::class .'@showLoginForm')->name('login');
     Route::post('login', LoginController::class .'@login');
+
+    // Registration Routes...
+    Route::get('register', RegisterController::class .'@showRegistrationForm')->name('register');
+    Route::post('register', RegisterController::class .'@register');*/
+
     Route::post('logout', LoginController::class .'@logout')->name('logout');
     Route::get('/logout', LoginController::class .'@logout');
 
-    // Registration Routes...
-    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-    Route::post('register', 'Auth\RegisterController@register');
-
     // Password Reset Routes...
-    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+    Route::get('password/reset', ForgotPasswordController::class .'@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', ForgotPasswordController::class .'@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', ResetPasswordController::class .'@showResetForm')->name('password.reset');
+    Route::post('password/reset', ResetPasswordController::class .'@reset');
 
     Route::get(
         '/socialite/{provider}', [
@@ -42,6 +46,9 @@ Route::group(['middleware' => $middleware], function(){
         'as' => 'socialite', 'uses' => UserController::class .'@socialite'
     ]);
 
+    Route::get('/login', [
+        'as' => 'user.index', 'uses' => UserController::class .'@index'
+    ]);
     Route::get('/user', [
         'as' => 'user.index', 'uses' => UserController::class .'@index'
     ]);

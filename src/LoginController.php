@@ -30,6 +30,16 @@ class LoginController extends Controller
     protected $redirectTo = '/admin';
 
     /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('larrock::admin.auth.login');
+    }
+
+    /**
      * Create a new controller instance.
      *
      * @return void

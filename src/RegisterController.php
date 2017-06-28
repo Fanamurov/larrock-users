@@ -2,7 +2,7 @@
 
 namespace Larrock\ComponentUsers;
 
-use App\User;
+use Larrock\ComponentUsers\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -37,6 +37,16 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return view('larrock::admin.auth.register');
     }
 
     /**

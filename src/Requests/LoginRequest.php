@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Larrock\ComponentUsers\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

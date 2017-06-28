@@ -12,7 +12,9 @@
     "autoload": {
         "psr-4": {
             "Larrock\\ComponentUsers\\": "src",
-            "Larrock\\ComponentUsers\\Models\\": "src/Models"
+            "Larrock\\ComponentUsers\\Models\\": "src/Models",
+            "Larrock\\ComponentUsers\\Requests\\": "src/Requests",
+            "Larrock\\ComponentUsers\\Database\\Seeds\\": "src/database/seeds"
         }
     },
     "require": {

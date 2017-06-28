@@ -15,3 +15,6 @@ change
         //     'table' => 'users',
         // ],
     ],
+
+
+php artisan db:seed --class="Larrock\ComponentUsers\Database\Seeds\UsersTableSeeder"

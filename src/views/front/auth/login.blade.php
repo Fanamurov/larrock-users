@@ -43,5 +43,5 @@
     </form>
 </div>
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\LoginRequest', '#form-login') !!}
+{!! JsValidator::formRequest('Larrock\ComponentUsers\Requests\LoginRequest', '#form-login') !!}
 @endpush
