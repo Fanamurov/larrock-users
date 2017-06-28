@@ -30,12 +30,12 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
         include __DIR__.'/routes.php';
         $this->app->make(UsersComponent::class);
 
-        if ( !class_exists('CreateLarrockUsersTable')){
+        if ( !class_exists('UpdateUsersTable')){
             // Publish the migration
             $timestamp = date('Y_m_d_His', time());
 
             $this->publishes([
-                __DIR__.'/database/migrations/0000_00_00_000000_create_users_table.php' => database_path('migrations/'.$timestamp.'_create_users_table.php')
+                __DIR__.'/database/migrations/0000_00_00_000000_update_users_table.php' => database_path('migrations/'.$timestamp.'_update_users_table.php')
             ], 'migrations');
         }
     }
