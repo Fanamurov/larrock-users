@@ -32,10 +32,11 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
 
         $migrations = [];
         $timestamp = date('Y_m_d_His', time());
+        $timestamp_after = date('Y_m_d_His', time()+10);
 
         if ( !class_exists('CreateUsersTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_users_table.php'] =
-                database_path('migrations/'.$timestamp.'_update_users_table.php');
+                database_path('migrations/'.$timestamp.'_create_users_table.php');
         }
         if ( !class_exists('CreateRolesTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_roles_table.php'] =
@@ -64,15 +65,15 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
 
         if ( !class_exists('AddForeignKeysToPermissionRoleTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_permission_role_table.php'] =
-                database_path('migrations/'.$timestamp.'_add_foreign_keys_to_permission_role_table.php');
+                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_permission_role_table.php');
         }
         if ( !class_exists('AddForeignKeysToPermissionUserTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_permission_user_table.php'] =
-                database_path('migrations/'.$timestamp.'_add_foreign_keys_to_permission_user_table.php');
+                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_permission_user_table.php');
         }
         if ( !class_exists('AddForeignKeysToRoleUserTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_role_user_table.php'] =
-                database_path('migrations/'.$timestamp.'_add_foreign_keys_to_role_user_table.php');
+                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_role_user_table.php');
         }
 
         $this->publishes($migrations, 'migrations');
