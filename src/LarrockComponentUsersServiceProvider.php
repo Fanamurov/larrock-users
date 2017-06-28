@@ -42,7 +42,7 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_roles_table.php'] =
                 database_path('migrations/'.$timestamp.'_create_roles_table.php');
         }
-        if ( !class_exists('CreatRoleUserTable')){
+        if ( !class_exists('CreateRoleUserTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_role_user_table.php'] =
                 database_path('migrations/'.$timestamp.'_create_role_user_table.php');
         }
@@ -50,7 +50,7 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_password_resets_table.php'] =
                 database_path('migrations/'.$timestamp.'_create_password_resets_table.php');
         }
-        if ( !class_exists('CreatPermissionsTable')){
+        if ( !class_exists('CreatePermissionsTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_permissions_table.php'] =
                 database_path('migrations/'.$timestamp.'_create_permissions_table.php');
         }
