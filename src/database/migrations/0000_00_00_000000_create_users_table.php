@@ -20,12 +20,12 @@ class CreateUsersTable extends Migration {
 			$table->string('password');
 			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
-			$table->char('first_name')->default('');
-			$table->char('last_name')->default('');
-			$table->char('fio')->default('');
-			$table->text('address', 65535);
-			$table->char('tel')->default('');
-			$table->text('permissions', 65535);
+			$table->char('first_name')->default('')->nullable();
+			$table->char('last_name')->default('')->nullable();
+			$table->char('fio')->default('')->nullable();
+			$table->text('address')->nullable();
+			$table->char('tel')->default('')->nullable();
+			$table->text('permissions')->nullable();
 		});
 	}
 
