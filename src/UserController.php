@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Larrock\ComponentUsers\Models\SocialAccount;
 use Larrock\ComponentUsers\Models\User;
+use Larrock\ComponentCatalog\CatalogComponent;
 use Mail;
 
 class UserController extends Controller

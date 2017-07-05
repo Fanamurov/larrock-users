@@ -36,44 +36,11 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
 
         if ( !class_exists('CreateUsersTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_users_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_users_table.php');
-        }
-        if ( !class_exists('CreateRolesTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_roles_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_roles_table.php');
-        }
-        if ( !class_exists('CreateRoleUserTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_role_user_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_role_user_table.php');
+                database_path('migrations/2015_01_14_111111_create_users_table.php');
         }
         if ( !class_exists('CreatePasswordResetsTable')){
             $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_password_resets_table.php'] =
                 database_path('migrations/'.$timestamp.'_create_password_resets_table.php');
-        }
-        if ( !class_exists('CreatePermissionsTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_permissions_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_permissions_table.php');
-        }
-        if ( !class_exists('CreatePermissionRoleTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_permission_role_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_permission_role_table.php');
-        }
-        if ( !class_exists('CreatePermissionUserTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_permission_user_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_permission_user_table.php');
-        }
-
-        if ( !class_exists('AddForeignKeysToPermissionRoleTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_permission_role_table.php'] =
-                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_permission_role_table.php');
-        }
-        if ( !class_exists('AddForeignKeysToPermissionUserTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_permission_user_table.php'] =
-                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_permission_user_table.php');
-        }
-        if ( !class_exists('AddForeignKeysToRoleUserTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_add_foreign_keys_to_role_user_table.php'] =
-                database_path('migrations/'.$timestamp_after.'_add_foreign_keys_to_role_user_table.php');
         }
 
         $this->publishes($migrations, 'migrations');
