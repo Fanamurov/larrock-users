@@ -2,7 +2,7 @@
     "name": "fanamurov/larrock-users",
     "description": "Users component for larrockCMS",
     "type": "library",
-    "license": "BSD",
+    "license": "LGPL",
     "authors": [
         {
             "name": "Alexandr Fanamurov",
