@@ -13,6 +13,7 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadViewsFrom(__DIR__.'/views', 'larrock');
 
         $this->publishes([
@@ -27,7 +28,6 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        include __DIR__.'/routes.php';
         $this->app->make(UsersComponent::class);
 
         $migrations = [];
