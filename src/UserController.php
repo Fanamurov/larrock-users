@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Larrock\ComponentUsers\Models\SocialAccount;
 use Larrock\ComponentUsers\Models\User;
+use Larrock\ComponentCart\Models\Cart;
+use Larrock\ComponentCatalog\Models\Catalog;
 use Larrock\ComponentCatalog\CatalogComponent;
 use Mail;
 
@@ -80,14 +82,17 @@ class UserController extends Controller
             Alert::add('error', 'Вы не авторизованы')->flash();
             return redirect()->intended();
         }
-        $data['user'] = User::whereId(Auth::id())->with('orders')->first();
-        $data['discounts'] = Discount::whereActive(1)
-            ->whereType('Накопительная скидка')
-            ->where('d_count', '>', 0)
-            ->where('cost_min', '<', $data['user']->orders->sum('cost'))
-            ->where('cost_max', '>', $data['user']->orders->sum('cost'))->first();
+        $data['user'] = User::whereId(Auth::id())->with('cart')->first();
 
-        return view('front.user.cabinet', $data);
+        if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
+            $data['discounts'] = Discount::whereActive(1)
+                ->whereType('Накопительная скидка')
+                ->where('d_count', '>', 0)
+                ->where('cost_min', '<', $data['user']->orders->sum('cost'))
+                ->where('cost_max', '>', $data['user']->orders->sum('cost'))->first();
+        }
+
+        return view('larrock::front.user.cabinet', $data);
     }
 
     public function updateProfile(Request $request)

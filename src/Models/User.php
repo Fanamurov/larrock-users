@@ -117,7 +117,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function cart()
     {
-        return $this->hasMany(Cart::class, 'user_id', 'id')->orderBy('updated_at', 'desc');
+        return $this->hasMany(Cart::class, 'user', 'id')->orderBy('updated_at', 'desc');
     }
 
     public function getImages()

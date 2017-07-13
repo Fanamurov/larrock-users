@@ -17,20 +17,24 @@
                         @include('larrock::front.user.form-edit-profile')
                     </div>
 
-                    @if(isset($discounts['num']))
-                        <p class="alert alert-success text-center">Поздравляем Вас! К следующему заказу вы получите скидку в
-                            @if(isset($discounts['num']) && $discounts['num'] > 0)
-                                {{ $discounts['num'] }} рублей!
-                            @endif
-                            @if(isset($discounts['percent']) && $discounts['percent'] > 0)
-                                {{ $discounts['percent'] }}%!
-                            @endif
-                        </p>
+                    @if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount'))
+                        @if(isset($discounts['num']))
+                            <p class="alert alert-success text-center">Поздравляем Вас! К следующему заказу вы получите скидку в
+                                @if(isset($discounts['num']) && $discounts['num'] > 0)
+                                    {{ $discounts['num'] }} рублей!
+                                @endif
+                                @if(isset($discounts['percent']) && $discounts['percent'] > 0)
+                                    {{ $discounts['percent'] }}%!
+                                @endif
+                            </p>
+                        @endif
                     @endif
 
-                    @each('larrock::front.user.orderItem', $user->orders, 'data')
-                    @if(count($user->orders) === 0)
-                        <div class="alert alert-warning">У вас еще нет заказов</div>
+                    @if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart'))
+                        @each('larrock::front.user.orderItem', $user->cart, 'data')
+                        @if(count($user->cart) === 0)
+                            <div class="uk-alert uk-alert-warning">У вас еще нет заказов</div>
+                        @endif
                     @endif
                 </div>
             </div>
