@@ -84,11 +84,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $this->addMediaConversion('110x110')
             ->setManipulations(['w' => 110, 'h' => 110])
-            ->performOnCollections('manual');
-
-        $this->addMediaConversion('110x110')
-            ->setManipulations(['w' => 110, 'h' => 110])
-            ->performOnCollections('photo');
+            ->performOnCollections('images');
     }
 
     protected $table = 'users';
@@ -124,17 +120,5 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $config = new ComponentUsers\UsersComponent();
         return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', $config->model)->orderBy('order_column', 'DESC');
-    }
-
-    public function getPhoto()
-    {
-        $config = new ComponentUsers\UsersComponent();
-        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', $config->model)->where('collection_name', '=', 'user_photo')->orderBy('order_column', 'DESC');
-    }
-
-    public function getCroppedPhoto()
-    {
-        $config = new ComponentUsers\UsersComponent();
-        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', $config->model)->where('collection_name', '=', 'photo')->orderBy('order_column', 'DESC');
     }
 }

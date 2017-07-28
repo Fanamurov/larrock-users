@@ -12,6 +12,7 @@ use Larrock\ComponentUsers\Models\User;
 use Larrock\ComponentCart\Models\Cart;
 use Larrock\ComponentCatalog\Models\Catalog;
 use Larrock\ComponentCatalog\CatalogComponent;
+use Larrock\ComponentDiscount\Models\Discount;
 use Mail;
 
 class UserController extends Controller
@@ -88,8 +89,8 @@ class UserController extends Controller
             $data['discounts'] = Discount::whereActive(1)
                 ->whereType('Накопительная скидка')
                 ->where('d_count', '>', 0)
-                ->where('cost_min', '<', $data['user']->orders->sum('cost'))
-                ->where('cost_max', '>', $data['user']->orders->sum('cost'))->first();
+                ->where('cost_min', '<', $data['user']->cart->sum('cost'))
+                ->where('cost_max', '>', $data['user']->cart->sum('cost'))->first();
         }
 
         return view('larrock::front.user.cabinet', $data);

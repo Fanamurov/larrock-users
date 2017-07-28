@@ -14,8 +14,8 @@ if(file_exists(base_path(). '/vendor/fanamurov/larrock-menu')){
 if(file_exists(base_path(). '/vendor/fanamurov/larrock-blocks')){
     $middleware[] = 'AddBlocksTemplate';
 }
-if(file_exists(base_path(). '/vendor/fanamurov/larrock-discounts')){
-    $middlewares[] = 'DiscountsShare';
+if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
+    $middleware[] = 'DiscountsShare';
 }
 
 Route::group(['middleware' => $middleware], function(){
