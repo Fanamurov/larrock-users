@@ -3,6 +3,7 @@
 namespace Larrock\ComponentUsers;
 
 use Illuminate\Support\ServiceProvider;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 
 class LarrockComponentUsersServiceProvider extends ServiceProvider
 {
@@ -28,7 +29,10 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make(UsersComponent::class);
+        $this->app->singleton('larrockusers', function() {
+            $class = config('larrock.components.users', UsersComponent::class);
+            return new $class;
+        });
 
         $migrations = [];
         $timestamp = date('Y_m_d_His', time());

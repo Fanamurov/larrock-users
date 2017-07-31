@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Larrock\ComponentUsers\Models\SocialAccount;
 use Larrock\ComponentUsers\Models\User;
 use Larrock\ComponentCart\Models\Cart;
@@ -83,7 +84,7 @@ class UserController extends Controller
             Alert::add('error', 'Вы не авторизованы')->flash();
             return redirect()->intended();
         }
-        $data['user'] = User::whereId(Auth::id())->with('cart')->first();
+        $data['user'] = LarrockUsers::config()->model::whereId(Auth::id())->with('cart')->first();
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
             $data['discounts'] = Discount::whereActive(1)
@@ -100,7 +101,7 @@ class UserController extends Controller
     {
         \View::share('current_user', Auth::guard()->user());
 
-        $user = User::whereId(Auth::id())->firstOrFail();
+        $user = LarrockUsers::config()->model::whereId(Auth::id())->firstOrFail();
         $user->fill($request->except(['password', 'old-password']));
         if($request->has('password')){
             if(\Hash::check($request->get('old-password'), $user->password)){
@@ -136,7 +137,7 @@ class UserController extends Controller
     protected function changeTovarStatus($cart)
     {
         foreach($cart as $item){
-            if($data = Catalog::find($item->id)){
+            if($data = $this->config_catalog->model::find($item->id)){
                 $data->nalichie += $item->qty; //Остаток товара
                 $data->sales -= $item->qty; //Количество продаж
                 if($data->save()){
@@ -170,15 +171,15 @@ class UserController extends Controller
                 $name = 'Покупатель';
             }
 
-            if( !$user = User::whereEmail($providerUser->getEmail())->first()){
-                $user = User::create([
+            if( !$user = LarrockUsers::config()->model::whereEmail($providerUser->getEmail())->first()){
+                $user = LarrockUsers::config()->model::create([
                     'email' => $email,
                     'name' => $name,
                     'fio' => $name,
                     'password' => \Hash::make($providerUser->getId() . $name),
                 ]);
 
-                if($get_user = User::whereEmail($email)->first()){
+                if($get_user = LarrockUsers::config()->model::whereEmail($email)->first()){
                     $get_user->attachRole(3); //role user
                     Alert::add('success', 'Пользователь '. $email .' успешно зарегистрированы')->flash();
                     //$this->mailRegistry($request, $get_user);

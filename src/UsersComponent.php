@@ -8,7 +8,7 @@ use Larrock\Core\Helpers\FormBuilder\FormPassword;
 use Larrock\Core\Helpers\FormBuilder\FormTagsRole;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
 use Larrock\ComponentUsers\Models\Roles;
-use Larrock\ComponentUsers\Models\User;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 
 class UsersComponent extends Component
 {
@@ -17,8 +17,13 @@ class UsersComponent extends Component
         $this->name = $this->table = 'users';
         $this->title = 'Пользователи';
         $this->description = 'Зарегистрированные пользователи на сайте';
-        $this->model = User::class;
+        $this->model = \config('larrock.models.users', User::class);
         $this->addRows()->isSearchable();
+    }
+
+    public function config()
+    {
+        return $this;
     }
 
     protected function addRows()
@@ -59,9 +64,9 @@ class UsersComponent extends Component
 
     public function renderAdminMenu()
     {
-        $count = \Cache::remember('count-data-admin-'. $this->name, 1440, function(){
-            return User::count(['id']);
+        $count = \Cache::remember('count-data-admin-'. LarrockUsers::getName(), 1440, function(){
+            return LarrockUsers::getModel()->count(['id']);
         });
-        return view('larrock::admin.sectionmenu.types.default', ['count' => $count, 'app' => $this, 'url' => '/admin/'. $this->name]);
+        return view('larrock::admin.sectionmenu.types.default', ['count' => $count, 'app' => LarrockUsers::getConfig(), 'url' => '/admin/'. LarrockUsers::getName()]);
     }
 }

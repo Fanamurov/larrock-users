@@ -3,7 +3,6 @@
 namespace Larrock\ComponentUsers;
 
 use Alert;
-use Larrock\ComponentUsers\Models\User;
 use Larrock\Core\Component;
 //use Ultraware\Roles\Models\Role;
 use Breadcrumbs;
@@ -14,21 +13,19 @@ use JsValidator;
 use Validator;
 use Redirect;
 use View;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 
 /* https://github.com/romanbican/roles */
 
 class AdminUsersController extends Controller
 {
-    protected $config;
-
     public function __construct()
     {
-        $Component = new UsersComponent();
-        $this->config = $Component->shareConfig();
+        LarrockUsers::shareConfig();
 
         Breadcrumbs::setView('larrock::admin.breadcrumb.breadcrumb');
-        Breadcrumbs::register('admin.'. $this->config->name .'.index', function($breadcrumbs){
-            $breadcrumbs->push($this->config->title, '/admin/'. $this->config->name);
+        Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.index', function($breadcrumbs){
+            $breadcrumbs->push(LarrockUsers::getTitle(), '/admin/'. LarrockUsers::getName());
         });
     }
 
@@ -45,7 +42,7 @@ class AdminUsersController extends Controller
             $with[] = 'cart';
             $enable_cart = true;
         }
-        $users = User::with($with)->paginate(15);
+        $users = LarrockUsers::getModel()->with($with)->paginate(15);
         return view('larrock::admin.users.index', array('data' => $users, 'enable_cart' => $enable_cart));
     }
 
@@ -56,10 +53,10 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        $data['app'] = $this->config->tabbable(NULL);
-        Breadcrumbs::register('admin.'. $this->config->name .'.create', function($breadcrumbs)
+        $data['app'] = LarrockUsers::tabbable(NULL);
+        Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.create', function($breadcrumbs)
         {
-            $breadcrumbs->parent('admin.'. $this->config->name .'.index');
+            $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
             $breadcrumbs->push('Создание');
         });
 
@@ -74,20 +71,19 @@ class AdminUsersController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), Component::_valid_construct($this->config->valid));
+        $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getValid()));
         if($validator->fails()){
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
 
-        $data = new User();
-        $data->fill($request->all());
+        $data = LarrockUsers::getModel()->fill($request->all());
         $data->password = bcrypt($request->get('password'));
 
         if($data->save()){
             $data->attachRole((int) $request->get('role'));
             \Cache::flush();
             Alert::add('successAdmin', 'Пользователь '. $request->input('email') .' добавлен')->flash();
-            return Redirect::to('/admin/'. $this->config->name .'/'. $data->id .'/edit')->withInput();
+            return Redirect::to('/admin/'. LarrockUsers::getName() .'/'. $data->id .'/edit')->withInput();
         }
 
         Alert::add('errorAdmin', 'Пользователь '. $request->input('email') .' не добавлен')->flash();
@@ -102,15 +98,14 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        $data['data'] = User::whereId($id)->with('role')->first();
-        $data['app'] = $this->config->tabbable($data['data']);
+        $data['data'] = LarrockUsers::getModel()->whereId($id)->with('role')->first();
 
-        $validator = JsValidator::make(Component::_valid_construct($this->config, 'update', $id));
+        $validator = JsValidator::make(Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
         View::share('validator', $validator);
 
         Breadcrumbs::register('admin.users.edit', function($breadcrumbs, $data)
         {
-            $breadcrumbs->parent('admin.'. $this->config->name .'.index');
+            $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
             $breadcrumbs->push($data->email);
         });
         return view('larrock::admin.admin-builder.edit', $data);
@@ -125,12 +120,12 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), Component::_valid_construct($this->config, 'update', $id));
+        $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
         if($validator->fails()){
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
 
-        $user = User::whereId($id)->first();
+        $user = LarrockUsers::getModel()->whereId($id)->first();
         $user->detachAllRoles();
         $user->attachRole($request->get('role'));
 
@@ -160,7 +155,7 @@ class AdminUsersController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        if($user = User::whereId($id)->first()){
+        if($user = LarrockUsers::getModel()->whereId($id)->first()){
             $user->detachAllRoles();
 
             if($user->delete()){
@@ -173,7 +168,7 @@ class AdminUsersController extends Controller
         }
 
         if($request->get('place') === 'material'){
-            return Redirect::to('/admin/'. $this->config->name);
+            return Redirect::to('/admin/'. LarrockUsers::getName());
         }
         return back();
     }
