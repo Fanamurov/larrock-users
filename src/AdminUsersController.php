@@ -21,7 +21,7 @@ class AdminUsersController extends Controller
 {
     public function __construct()
     {
-        LarrockUsers::shareConfig();
+        $this->config = LarrockUsers::shareConfig();
 
         Breadcrumbs::setView('larrock::admin.breadcrumb.breadcrumb');
         Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.index', function($breadcrumbs){
