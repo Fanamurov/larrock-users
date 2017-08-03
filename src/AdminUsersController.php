@@ -99,6 +99,7 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         $data['data'] = LarrockUsers::getModel()->whereId($id)->with('role')->first();
+        $data['app'] = LarrockUsers::tabbable($data['data']);
 
         $validator = JsValidator::make(Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
         View::share('validator', $validator);

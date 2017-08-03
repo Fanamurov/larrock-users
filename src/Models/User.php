@@ -1,7 +1,8 @@
 <?php
 namespace Larrock\ComponentUsers\Models;
 
-use Larrock\ComponentCart\Models\Cart;
+use Larrock\ComponentCart\Facades\LarrockCart;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -17,8 +18,6 @@ use Ultraware\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContra
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
-
-use Larrock\ComponentUsers;
 
 /**
  * App\User
@@ -113,12 +112,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function cart()
     {
-        return $this->hasMany(Cart::class, 'user', 'id')->orderBy('updated_at', 'desc');
+        return $this->hasMany(LarrockCart::getModelName(), 'user', 'id')->orderBy('updated_at', 'desc');
     }
 
     public function getImages()
     {
-        $config = new ComponentUsers\UsersComponent();
-        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', $config->model)->orderBy('order_column', 'DESC');
+        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', LarrockUsers::getModelName())->orderBy('order_column', 'DESC');
     }
 }

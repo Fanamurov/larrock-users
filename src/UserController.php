@@ -7,32 +7,26 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Larrock\ComponentCart\Facades\LarrockCart;
+use Larrock\ComponentCatalog\Facades\LarrockCatalog;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Larrock\ComponentUsers\Models\SocialAccount;
-use Larrock\ComponentUsers\Models\User;
-use Larrock\ComponentCart\Models\Cart;
-use Larrock\ComponentCatalog\Models\Catalog;
 use Larrock\ComponentCatalog\CatalogComponent;
 use Larrock\ComponentDiscount\Models\Discount;
 use Mail;
 
 class UserController extends Controller
 {
-    public $ykassa;
-    protected $config_catalog;
-
     public function __construct()
     {
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-catalog')) {
-            $Component = new CatalogComponent();
-            $this->config_catalog = $Component->shareConfig();
-            \View::share('config_catalog', $this->config_catalog);
+            \View::share('config_catalog', LarrockCatalog::getConfig());
         }
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')) {
-            $this->ykassa = config('yandexkassa');
             \View::share('ykassa', $this->ykassa);
         }
+        LarrockUsers::shareConfig();
     }
 
 
@@ -120,7 +114,7 @@ class UserController extends Controller
 
     public function removeOrder($id)
     {
-        $order = Cart::find($id);
+        $order = LarrockCart::getModel()->find($id);
         if($order->delete()){
             $this->changeTovarStatus($order->items);
             Alert::add('success', 'Заказ успешно отменен')->flash();
@@ -137,7 +131,7 @@ class UserController extends Controller
     protected function changeTovarStatus($cart)
     {
         foreach($cart as $item){
-            if($data = $this->config_catalog->model::find($item->id)){
+            if($data = LarrockCatalog::getModel()->find($item->id)){
                 $data->nalichie += $item->qty; //Остаток товара
                 $data->sales -= $item->qty; //Количество продаж
                 if($data->save()){
@@ -161,8 +155,7 @@ class UserController extends Controller
                 'provider' => $provider
             ]);
 
-            $email = $providerUser->getEmail();
-            if( !$email){
+            if( !$email = $providerUser->getEmail()){
                 Alert::add('error', 'В вашем соц.профиле не указан email. Регистрация на сайте через ваш аккаунт в '. $provider .' не возможна');
                 return redirect('/user')->withInput();
             }
@@ -216,11 +209,7 @@ class UserController extends Controller
                 );
             });
 
-        if($send){
-            Alert::add('success', 'На Ваш email отправлено письмо с регистрационными данными')->flash();
-        }else{
-            Alert::add('danger', 'Письмо с информацией по регистрации не отправлено')->flash();
-        }
+        Alert::add('success', 'На Ваш email отправлено письмо с регистрационными данными')->flash();
     }
 
     public function logout()
