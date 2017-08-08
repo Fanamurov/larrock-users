@@ -24,7 +24,7 @@ class UserController extends Controller
         }
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')) {
-            \View::share('ykassa', $this->ykassa);
+            \View::share('ykassa', config('yandex_kassa'));
         }
         LarrockUsers::shareConfig();
     }
