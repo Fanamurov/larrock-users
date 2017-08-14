@@ -9,6 +9,7 @@ use Larrock\Core\Helpers\FormBuilder\FormTagsRole;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
 use Larrock\ComponentUsers\Models\Roles;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
+use Larrock\ComponentUsers\Models\User;
 
 class UsersComponent extends Component
 {

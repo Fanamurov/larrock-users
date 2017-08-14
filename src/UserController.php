@@ -78,7 +78,13 @@ class UserController extends Controller
             Alert::add('error', 'Вы не авторизованы')->flash();
             return redirect()->intended();
         }
-        $data['user'] = LarrockUsers::config()->model::whereId(Auth::id())->with('cart')->first();
+        $user = LarrockUsers::getModel()::whereId(Auth::id());
+
+        if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')){
+            $user->with('cart');
+        }
+
+        $data['user'] = $user->first();
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
             $data['discounts'] = Discount::whereActive(1)
