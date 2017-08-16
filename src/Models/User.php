@@ -69,6 +69,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     use SearchableTrait;
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->fillable(LarrockUsers::addFillableUserRows(['first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel']));
+        $this->table = LarrockUsers::getConfig()->table;
+    }
+
     // no need for this, but you can define default searchable columns:
     protected $searchable = [
         'columns' => [
@@ -86,16 +93,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->performOnCollections('images');
     }
 
-    protected $table = 'users';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel'
-    ];
     /**
      * The attributes excluded from the model's JSON form.
      *
