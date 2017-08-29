@@ -27,5 +27,15 @@
         "socialiteproviders/vkontakte": "^3.0",
         "socialiteproviders/yandex": "^3.0",
         "ultraware/roles": "^5.4"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Larrock\\ComponentUsers\\LarrockComponentUsersServiceProvider"
+            ],
+            "aliases": {
+                "LarrockUsers": "Larrock\\ComponentUsers\\Facades\\LarrockUsers"
+            }
+        }
     }
 }
