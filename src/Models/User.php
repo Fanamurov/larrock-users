@@ -16,8 +16,8 @@ use Ultraware\Roles\Traits\HasRoleAndPermission;
 use Ultraware\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\Media;
 
 /**
  * App\User
@@ -86,10 +86,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ]
     ];
 
-    public function registerMediaConversions()
+    public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('110x110')
-            ->setManipulations(['w' => 110, 'h' => 110])
+            ->height(110)->width(110)
             ->performOnCollections('images');
     }
 
