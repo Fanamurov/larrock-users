@@ -38,19 +38,10 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
         $timestamp = date('Y_m_d_His', time());
         $timestamp_after = date('Y_m_d_His', time()+10);
 
-        if ( !class_exists('CreateUsersTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_users_table.php'] =
-                database_path('migrations/2015_01_14_111111_create_users_table.php');
-        }else{
-            if ( !class_exists('UpdateUsersTable')){
+        if ( !class_exists('UpdateUsersTable')){
                 $migrations[__DIR__.'/database/migrations/0000_00_00_000000_update_users_table.php'] =
                     database_path('migrations/'. $timestamp .'_update_users_table.php');
             }
-        }
-        if ( !class_exists('CreatePasswordResetsTable')){
-            $migrations[__DIR__.'/database/migrations/0000_00_00_000000_create_password_resets_table.php'] =
-                database_path('migrations/'.$timestamp.'_create_password_resets_table.php');
-        }
 
         $this->publishes($migrations, 'migrations');
     }
