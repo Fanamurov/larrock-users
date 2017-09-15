@@ -12,10 +12,12 @@
                 @include('larrock::front.auth.register')
             </div>
         </div>
-        <div class="uk-grid uk-margin-large-top">
-            <div class="uk-width-1-1">
-                @include('larrock::front.auth.socialite')
+        @if(env('ODNOKLASSNIKI_ID'))
+            <div class="uk-grid uk-margin-large-top">
+                <div class="uk-width-1-1">
+                    @include('larrock::front.auth.socialite')
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
