@@ -76,6 +76,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->table = LarrockUsers::getConfig()->table;
     }
 
+    protected $guarded = [];
+
     // no need for this, but you can define default searchable columns:
     protected $searchable = [
         'columns' => [
