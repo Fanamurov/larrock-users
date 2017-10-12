@@ -19,13 +19,6 @@
     },
     "require": {
         "fanamurov/larrock-core": "^0.2",
-        "laravel/socialite": "^3.0",
-        "jhaoda/socialite-odnoklassniki": "^3.0",
-        "socialiteproviders/google": "^3.0",
-        "socialiteproviders/instagram": "^3.0",
-        "socialiteproviders/twitter": "^3.0",
-        "socialiteproviders/vkontakte": "^3.0",
-        "socialiteproviders/yandex": "^3.0",
         "ultraware/roles": "^5.4"
     },
     "extra": {
