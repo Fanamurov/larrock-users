@@ -16,6 +16,7 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadViewsFrom(__DIR__.'/views', 'larrock');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         $this->publishes([
             __DIR__.'/views' => base_path('resources/views/vendor/larrock')
@@ -33,16 +34,5 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
             $class = config('larrock.components.users', UsersComponent::class);
             return new $class;
         });
-
-        $migrations = [];
-        $timestamp = date('Y_m_d_His', time());
-        $timestamp_after = date('Y_m_d_His', time()+10);
-
-        if ( !class_exists('UpdateUsersTable')){
-                $migrations[__DIR__.'/database/migrations/0000_00_00_000000_update_users_table.php'] =
-                    database_path('migrations/'. $timestamp .'_update_users_table.php');
-            }
-
-        $this->publishes($migrations, 'migrations');
     }
 }

@@ -7,9 +7,7 @@ use Larrock\ComponentUsers\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Larrock\Core\Requests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller

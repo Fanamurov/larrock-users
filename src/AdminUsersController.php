@@ -2,7 +2,6 @@
 
 namespace Larrock\ComponentUsers;
 
-use Alert;
 use Larrock\Core\Component;
 //use Ultraware\Roles\Models\Role;
 use Breadcrumbs;
@@ -82,11 +81,11 @@ class AdminUsersController extends Controller
         if($data->save()){
             $data->attachRole((int) $request->get('role'));
             \Cache::flush();
-            Alert::add('successAdmin', 'Пользователь '. $request->input('email') .' добавлен')->flash();
+            \Session::push('message.success', 'Пользователь '. $request->input('email') .' добавлен');
             return Redirect::to('/admin/'. LarrockUsers::getName() .'/'. $data->id .'/edit')->withInput();
         }
 
-        Alert::add('errorAdmin', 'Пользователь '. $request->input('email') .' не добавлен')->flash();
+        \Session::push('message.danger', 'Пользователь '. $request->input('email') .' не добавлен');
         return Redirect::to('/admin/users');
     }
 
@@ -138,10 +137,10 @@ class AdminUsersController extends Controller
         }
 
         if($user->update($submit)){
-            Alert::add('successAdmin', 'Пользователь изменен')->flash();
+            \Session::push('message.success', 'Пользователь изменен');
             \Cache::flush();
         }else{
-            Alert::add('errorAdmin', 'Не удалось изменить пользователя')->flash();
+            \Session::push('message.danger', 'Не удалось изменить пользователя');
         }
 
         return back()->withInput();
@@ -160,12 +159,12 @@ class AdminUsersController extends Controller
             $user->detachAllRoles();
 
             if($user->delete()){
-                Alert::add('successAdmin', 'Пользователь удален')->flash();
+                \Session::push('message.success', 'Пользователь удален');
             }else{
-                Alert::add('errorAdmin', 'Не удалось удалить пользователя')->flash();
+                \Session::push('message.danger', 'Не удалось удалить пользователя');
             }
         }else{
-            Alert::add('errorAdmin', 'Такого пользователя больше нет')->flash();
+            \Session::push('message.danger', 'Такого пользователя больше нет');
         }
 
         if($request->get('place') === 'material'){
