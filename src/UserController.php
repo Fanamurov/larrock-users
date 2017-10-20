@@ -2,18 +2,15 @@
 
 namespace Larrock\ComponentUsers;
 
-use Alert;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
-use Laravel\Socialite\Contracts\User as ProviderUser;
 use Larrock\ComponentCart\Facades\LarrockCart;
 use Larrock\ComponentCatalog\Facades\LarrockCatalog;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Larrock\ComponentUsers\Models\SocialAccount;
-use Larrock\ComponentCatalog\CatalogComponent;
-use Larrock\ComponentDiscount\Models\Discount;
-use Mail;
+use Larrock\ComponentDiscount\Facades\LarrockDiscount;
+use Session;
 
 class UserController extends Controller
 {
@@ -47,7 +44,6 @@ class UserController extends Controller
     public function authenticate(Request $request)
     {
         if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
-            //IF admin
             if(auth()->user()->level() === 3) {
                 return redirect()->intended('/admin');
             }
@@ -57,7 +53,7 @@ class UserController extends Controller
             }
             return redirect()->intended('/user/cabinet');
         }
-        \Alert::add('error', 'Логин или пароль не верные')->flash();
+        Session::push('message.danger', 'Логин или пароль не верные');
         return back();
     }
 
@@ -68,14 +64,12 @@ class UserController extends Controller
         return redirect()->to('/user');
     }
 
-    //TODO: Восстановление пароля
-
     public function cabinet()
     {
         \View::share('current_user', Auth::guard()->user());
 
         if(Auth::check() !== TRUE){
-            Alert::add('error', 'Вы не авторизованы')->flash();
+            Session::push('message.danger', 'Вы не авторизованы');
             return redirect()->intended();
         }
         $user = LarrockUsers::getModel()::whereId(Auth::id());
@@ -87,7 +81,7 @@ class UserController extends Controller
         $data['user'] = $user->first();
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
-            $data['discounts'] = Discount::whereActive(1)
+            $data['discounts'] = LarrockDiscount::getModel()->whereActive(1)
                 ->whereType('Накопительная скидка')
                 ->where('d_count', '>', 0)
                 ->where('cost_min', '<', $data['user']->cart->sum('cost'))
@@ -107,13 +101,13 @@ class UserController extends Controller
             if(\Hash::check($request->get('old-password'), $user->password)){
                 $user->password = \Hash::make($request->get('password'));
             }else{
-                Alert::add('error', 'Введенный вами старый пароль не верен')->flash();
+                Session::push('message.danger', 'Введенный вами старый пароль не верен');
             }
         }
         if($user->save()){
-            Alert::add('success', 'Ваш профиль успешно обновлен')->flash();
+            Session::push('message.danger', 'Ваш профиль успешно обновлен');
         }else{
-            Alert::add('error', 'Произошла ошибка во время обновления профиля')->flash();
+            Session::push('message.danger', 'Произошла ошибка во время обновления профиля');
         }
         return back()->withInput();
     }
@@ -123,9 +117,9 @@ class UserController extends Controller
         $order = LarrockCart::getModel()->find($id);
         if($order->delete()){
             $this->changeTovarStatus($order->items);
-            Alert::add('success', 'Заказ успешно отменен')->flash();
+            Session::push('message.danger', 'Заказ успешно отменен');
         }else{
-            Alert::add('error', 'Произошла ошибка во время отмены заказа')->flash();
+            Session::push('message.danger', 'Произошла ошибка во время отмены заказа');
         }
         return back()->withInput();
     }
@@ -141,9 +135,9 @@ class UserController extends Controller
                 $data->nalichie += $item->qty; //Остаток товара
                 $data->sales -= $item->qty; //Количество продаж
                 if($data->save()){
-                    Alert::add('success', 'Резервирование товара под ваш заказ снято')->flash();
+                    Session::push('message.danger', 'Резервирование товара под ваш заказ снято');
                 }else{
-                    Alert::add('error', 'Не удалось отменить резервирование товара под ваш заказ')->flash();
+                    Session::push('message.danger', 'Не удалось отменить резервирование товара под ваш заказ');
                 }
             }
         }
@@ -162,7 +156,7 @@ class UserController extends Controller
             ]);
 
             if( !$email = $providerUser->getEmail()){
-                Alert::add('error', 'В вашем соц.профиле не указан email. Регистрация на сайте через ваш аккаунт в '. $provider .' не возможна');
+                Session::push('message.danger', 'В вашем соц.профиле не указан email. Регистрация на сайте через ваш аккаунт в '. $provider .' не возможна');
                 return redirect('/user')->withInput();
             }
 
@@ -180,8 +174,7 @@ class UserController extends Controller
 
                 if($get_user = LarrockUsers::config()->model::whereEmail($email)->first()){
                     $get_user->attachRole(3); //role user
-                    Alert::add('success', 'Пользователь '. $email .' успешно зарегистрированы')->flash();
-                    //$this->mailRegistry($request, $get_user);
+                    Session::push('message.danger', 'Пользователь '. $email .' успешно зарегистрированы');
                 }
             }
 
@@ -191,31 +184,6 @@ class UserController extends Controller
         }
 
         return $account->user;
-    }
-
-    /**
-     * Отправка письма о регистрации
-     * @param Request $request
-     * @param User    $user
-     */
-    public function mailRegistry(Request $request, User $user)
-    {
-        //FormsLog::create(['formname' => 'register', 'params' => $request->all(), 'status' => 'Новое']);
-
-        $mails = collect(array_map('trim', explode(',', env('MAIL_TO_ADMIN', 'robot@martds.ru'))));
-
-        /** @noinspection PhpVoidFunctionResultUsedInspection */
-        $send = Mail::send('emails.register', ['data' => $user->toArray()],
-            function($message) use ($mails){
-                $message->from('no-reply@'. array_get($_SERVER, 'HTTP_HOST'), env('MAIL_TO_ADMIN_NAME', 'ROBOT'));
-                foreach($mails as $value){
-                    $message->to($value);
-                }
-                $message->subject('Вы успешно зарегистрировались на сайте '. env('SITE_NAME', array_get($_SERVER, 'HTTP_HOST'))
-                );
-            });
-
-        Alert::add('success', 'На Ваш email отправлено письмо с регистрационными данными')->flash();
     }
 
     public function logout()
