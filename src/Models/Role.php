@@ -3,9 +3,9 @@
 namespace Larrock\ComponentUsers\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Ultraware\Roles\Contracts\RoleHasRelations as RoleHasRelationsContract;
-use Ultraware\Roles\Traits\RoleHasRelations;
-use Ultraware\Roles\Traits\Slugable;
+use Larrock\ComponentUsers\Roles\Contracts\RoleHasRelations as RoleHasRelationsContract;
+use Larrock\ComponentUsers\Roles\Traits\RoleHasRelations;
+use Larrock\ComponentUsers\Roles\Traits\Slugable;
 
 class Role extends Model implements RoleHasRelationsContract
 {

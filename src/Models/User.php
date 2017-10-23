@@ -12,8 +12,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Nicolaslopezj\Searchable\SearchableTrait;
 
-use Ultraware\Roles\Traits\HasRoleAndPermission;
-use Ultraware\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
+use Larrock\ComponentUsers\Roles\Traits\HasRoleAndPermission;
+use Larrock\ComponentUsers\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
@@ -55,9 +55,9 @@ use Spatie\MediaLibrary\Media;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereFio($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereAddress($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereTel($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\Ultraware\Roles\Models\Role[] $role
- * @property-read \Illuminate\Database\Eloquent\Collection|\Ultraware\Roles\Models\Role[] $roles
- * @property-read \Illuminate\Database\Eloquent\Collection|\Ultraware\Roles\Models\Permission[] $userPermissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Role[] $role
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Permission[] $userPermissions
  * @method static \Illuminate\Database\Query\Builder|\App\User search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
  * @method static \Illuminate\Database\Query\Builder|\App\User searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
  */
@@ -116,6 +116,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getImages()
     {
-        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')->where('model_type', '=', LarrockUsers::getModelName())->orderBy('order_column', 'DESC');
+        return $this->hasMany('Spatie\MediaLibrary\Media', 'model_id', 'id')
+            ->where('model_type', '=', LarrockUsers::getModelName())
+            ->orderBy('order_column', 'DESC');
     }
 }

@@ -4,7 +4,7 @@ namespace Larrock\ComponentUsers\Roles\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Ultraware\Roles\Models\Permission;
+use Larrock\ComponentUsers\Roles\Models\Permission;
 
 trait RoleHasRelations
 {
@@ -15,7 +15,7 @@ trait RoleHasRelations
      */
     public function permissions()
     {
-        return $this->belongsToMany(config('roles.models.permission'))->withTimestamps();
+        return $this->belongsToMany(config('larrock-roles.models.permission'))->withTimestamps();
     }
 
     /**

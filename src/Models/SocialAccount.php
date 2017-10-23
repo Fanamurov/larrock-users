@@ -3,6 +3,7 @@
 namespace Larrock\ComponentUsers\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Larrock\ComponentUsers\Facades\LarrockUsers;
 
 class SocialAccount extends Model
 {

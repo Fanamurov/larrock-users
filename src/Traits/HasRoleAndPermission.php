@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Ultraware\Roles\Models\Permission;
-use Ultraware\Roles\Models\Role;
+use Larrock\ComponentUsers\Roles\Models\Permission;
+use Larrock\ComponentUsers\Roles\Models\Role;
 
 trait HasRoleAndPermission
 {
@@ -34,7 +34,7 @@ trait HasRoleAndPermission
      */
     public function roles()
     {
-        return $this->belongsToMany(config('roles.models.role'))->withTimestamps();
+        return $this->belongsToMany(config('larrock-roles.models.role'))->withTimestamps();
     }
 
     /**
@@ -184,7 +184,7 @@ trait HasRoleAndPermission
      */
     public function rolePermissions()
     {
-        $permissionModel = app(config('roles.models.permission'));
+        $permissionModel = app(config('larrock-roles.models.permission'));
 
         if (!$permissionModel instanceof Model) {
             throw new InvalidArgumentException('[roles.models.permission] must be an instance of \Illuminate\Database\Eloquent\Model');
@@ -206,7 +206,7 @@ trait HasRoleAndPermission
      */
     public function userPermissions()
     {
-        return $this->belongsToMany(config('roles.models.permission'))->withTimestamps();
+        return $this->belongsToMany(config('larrock-roles.models.permission'))->withTimestamps();
     }
 
     /**
@@ -388,7 +388,7 @@ trait HasRoleAndPermission
      */
     private function isPretendEnabled()
     {
-        return (bool) config('roles.pretend.enabled');
+        return (bool) config('larrock-roles.pretend.enabled');
     }
 
     /**
@@ -399,7 +399,7 @@ trait HasRoleAndPermission
      */
     private function pretend($option)
     {
-        return (bool) config('roles.pretend.options.' . $option);
+        return (bool) config('larrock-roles.pretend.options.' . $option);
     }
 
     /**
@@ -416,11 +416,11 @@ trait HasRoleAndPermission
     public function callMagic($method, $parameters)
     {
         if (starts_with($method, 'is')) {
-            return $this->hasRole(snake_case(substr($method, 2), config('roles.separator')));
+            return $this->hasRole(snake_case(substr($method, 2), config('larrock-roles.separator')));
         } elseif (starts_with($method, 'can')) {
-            return $this->hasPermission(snake_case(substr($method, 3), config('roles.separator')));
+            return $this->hasPermission(snake_case(substr($method, 3), config('larrock-roles.separator')));
         } elseif (starts_with($method, 'allowed')) {
-            return $this->allowed(snake_case(substr($method, 7), config('roles.separator')), $parameters[0], (isset($parameters[1])) ? $parameters[1] : true, (isset($parameters[2])) ? $parameters[2] : 'user_id');
+            return $this->allowed(snake_case(substr($method, 7), config('larrock-roles.separator')), $parameters[0], (isset($parameters[1])) ? $parameters[1] : true, (isset($parameters[2])) ? $parameters[2] : 'user_id');
         }
 
         return parent::__call($method, $parameters);
