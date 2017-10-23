@@ -106,7 +106,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function role()
     {
-        return $this->belongsToMany('Ultraware\Roles\Models\Role', 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(config('larrock-roles.models.role'), 'role_user', 'user_id', 'role_id');
     }
 
     public function cart()
