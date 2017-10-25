@@ -112,37 +112,6 @@ class UserController extends Controller
         return back()->withInput();
     }
 
-    public function removeOrder($id)
-    {
-        $order = LarrockCart::getModel()->find($id);
-        if($order->delete()){
-            $this->changeTovarStatus($order->items);
-            Session::push('message.danger', 'Заказ успешно отменен');
-        }else{
-            Session::push('message.danger', 'Произошла ошибка во время отмены заказа');
-        }
-        return back()->withInput();
-    }
-
-    /**
-     * Меняем количество товара в наличии
-     * @param $cart
-     */
-    protected function changeTovarStatus($cart)
-    {
-        foreach($cart as $item){
-            if($data = LarrockCatalog::getModel()->find($item->id)){
-                $data->nalichie += $item->qty; //Остаток товара
-                $data->sales -= $item->qty; //Количество продаж
-                if($data->save()){
-                    Session::push('message.danger', 'Резервирование товара под ваш заказ снято');
-                }else{
-                    Session::push('message.danger', 'Не удалось отменить резервирование товара под ваш заказ');
-                }
-            }
-        }
-    }
-
     public function createOrGetUser(ProviderUser $providerUser, $provider)
     {
         $account = SocialAccount::whereProvider($provider)

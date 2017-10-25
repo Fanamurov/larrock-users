@@ -61,9 +61,6 @@ Route::group(['middleware' => $middleware], function(){
     Route::post('/user/edit', [
         'as' => 'user.edit', 'uses' => UserController::class .'@updateProfile'
     ]);
-    Route::post('/user/removeOrder/{id}', [
-        'as' => 'user.removeOrder', 'uses' => UserController::class .'@removeOrder'
-    ]);
 });
 
 Route::group(['prefix' => 'admin', 'middleware'=> ['web', 'level:2', 'LarrockAdminMenu', 'SaveAdminPluginsData']], function(){
