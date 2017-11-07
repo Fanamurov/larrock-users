@@ -74,7 +74,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->fillable(LarrockUsers::addFillableUserRows(['first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel']));
         $this->table = LarrockUsers::getConfig()->table;
         $this->modelName = LarrockUsers::getModelName();
-        $this->componentName = 'user';
     }
 
     protected $guarded = [];
