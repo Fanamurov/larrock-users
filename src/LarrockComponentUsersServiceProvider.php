@@ -3,7 +3,7 @@
 namespace Larrock\ComponentUsers;
 
 use Illuminate\Support\ServiceProvider;
-use Larrock\ComponentUsers\Facades\LarrockUsers;
+use Larrock\ComponentUsers\Commands\LarrockAddAdminCommand;
 
 class LarrockComponentUsersServiceProvider extends ServiceProvider
 {
@@ -40,6 +40,11 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
             $class = config('larrock.components.users', UsersComponent::class);
             return new $class;
         });
+
+        $this->app->bind('command.larrock:addAdmin', LarrockAddAdminCommand::class);
+        $this->commands([
+            'command.larrock:addAdmin'
+        ]);
     }
 
     /**
