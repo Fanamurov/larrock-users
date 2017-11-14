@@ -10,6 +10,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+use Larrock\Core\Component;
 use Larrock\Core\Traits\GetFilesAndImages;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
@@ -63,6 +64,11 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMediaConversions
 {
+    /**
+     * @var $this Component
+     */
+    public $config;
+
     use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
     use HasMediaTrait;
     use SearchableTrait;
@@ -73,7 +79,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         parent::__construct($attributes);
         $this->fillable(LarrockUsers::addFillableUserRows(['first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel']));
         $this->table = LarrockUsers::getConfig()->table;
-        $this->modelName = LarrockUsers::getModelName();
+        $this->config = LarrockUsers::getConfig();
     }
 
     protected $guarded = [];
