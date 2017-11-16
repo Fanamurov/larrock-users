@@ -77,6 +77,7 @@ class AdminUsersController extends Controller
 
         $data = LarrockUsers::getModel()->fill($request->all());
         $data->password = bcrypt($request->get('password'));
+        unset($data->config);
 
         if($data->save()){
             $data->attachRole((int) $request->get('role'));
