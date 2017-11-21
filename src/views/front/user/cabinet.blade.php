@@ -7,7 +7,7 @@
             <div class="uk-grid">
                 <div class="uk-width-1-1">
                     <div class="user-buttons">
-                        <a class="uk-button uk-align-right" href="/user/logout"><i class="uk-icon-close"></i> Выйти</a>
+                        <a class="uk-button uk-align-right" href="/logout"><i class="uk-icon-close"></i> Выйти</a>
                         <button class="uk-button uk-align-right" type="button" data-uk-toggle="{target:'#collapseEditProfile'}">Редактирование профиля</button>
                     </div>
                     <div class="uk-clearfix"></div>

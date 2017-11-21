@@ -4,17 +4,6 @@
         {!! csrf_field() !!}
 
         <div class="uk-form-row">
-            <label class="uk-form-label" for="register_name">Ваше имя:</label>
-            <div class="uk-form-controls">
-                <input id="register_name" type="text"
-                       class="uk-width-1-1 {{ $errors->has('name') ? 'uk-form-danger' : '' }}" name="name" value="{{ old('name') }}">
-                @if ($errors->has('name'))
-                    <span class="help-block">{{ $errors->first('name') }}</span>
-                @endif
-            </div>
-        </div>
-
-        <div class="uk-form-row">
             <label class="uk-form-label" for="register_email">E-Mail (он же логин):</label>
             <div class="uk-form-controls">
                 <input id="register_email" type="email"

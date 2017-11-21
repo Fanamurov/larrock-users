@@ -1,47 +1,33 @@
 @extends('larrock::front.main')
+@section('title', 'Сброс пароля')
 
-<!-- Main Content -->
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-xs-24 col-md-16 col-md-offset-4">
-            <div class="panel panel-default">
-                <h1 class="text-center">Восстановление пароля</h1>
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
+    <div class="uk-container-center auth-container">
+        <div class="uk-grid">
+            <div class="uk-width-1-1 uk-width-medium-1-2 text-container">
+                <h1>Сброс пароля</h1>
+                @if (session('status'))
+                    <div class="uk-alert uk-alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                <form class="uk-form uk-form-stacked" method="POST" action="{{ url('/password/email') }}">
+                    <div class="uk-form-row {{ $errors->has('email') ? ' has-error' : '' }}">
+                        <label class="uk-form-label" for="email">E-Mail:</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-form-large uk-width-1-1" type="email" name="email" id="email" value="{{ old('email') }}">
+                            @if ($errors->has('email'))
+                                <span class="uk-alert uk-alert-danger">{{ $errors->first('email') }}</span>
+                            @endif
                         </div>
-                    @endif
+                    </div>
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                    <div class="uk-form-row">
                         {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-8 control-label" for="email">E-Mail адрес</label>
-
-                            <div class="col-md-12">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12 col-md-offset-8">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i> Восстановить пароль
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                        <button type="submit" class="uk-button uk-button-large uk-width-1-1">Начать сброс пароля</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
 @endsection

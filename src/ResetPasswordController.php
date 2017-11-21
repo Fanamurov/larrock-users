@@ -37,4 +37,12 @@ class ResetPasswordController extends Controller
             ['token' => $token, 'email' => $request->email]
         );
     }
+
+    public function redirectPath()
+    {
+        if(auth()->user()->level() === 3) {
+            return '/admin';
+        }
+        return '/cabinet';
+    }
 }

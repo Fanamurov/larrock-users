@@ -19,48 +19,19 @@ if(file_exists(base_path(). '/vendor/fanamurov/larrock-discount')){
 }
 
 Route::group(['middleware' => $middleware], function(){
-    Route::post('register', RegisterController::class .'@register');
+    Route::get('/login', 'Larrock\ComponentUsers\UsersController@showLoginForm')->name('user.login');
+    Route::post('/login', 'Larrock\ComponentUsers\UsersController@login')->name('user.login.post');
 
-    Route::post('logout', LoginController::class .'@logout')->name('logout');
-    Route::get('/logout', LoginController::class .'@logout');
+    Route::any('/logout', 'Larrock\ComponentUsers\UsersController@logout')->name('user.logout');
+    Route::post('/register', 'Larrock\ComponentUsers\UsersController@register')->name('user.logout.post');
 
-    // Password Reset Routes...
-    Route::get('password/reset', ForgotPasswordController::class .'@showLinkRequestForm')->name('password.request');
-    Route::post('password/email', ForgotPasswordController::class .'@sendResetLinkEmail')->name('password.email');
-    Route::get('password/reset/{token}', ResetPasswordController::class .'@showResetForm')->name('password.reset');
-    Route::post('password/reset', ResetPasswordController::class .'@reset');
+    Route::get('/user', 'Larrock\ComponentUsers\UsersController@index')->name('user.index');
+    Route::get('/cabinet', 'Larrock\ComponentUsers\UsersController@cabinet')->name('user.cabiner');
 
-    Route::get(
-        '/socialite/{provider}', [
-            'as' => 'socialite.auth',
-            function ( $provider ) {
-                return \Socialite::driver( $provider )->redirect();
-            }
-        ]
-    );
-
-    Route::get('/socialite/{provider}/callback', [
-        'as' => 'socialite', 'uses' => UserController::class .'@socialite'
-    ]);
-
-    Route::get('/login', [
-        'as' => 'user.index', 'uses' => UserController::class .'@index'
-    ]);
-    Route::get('/user', [
-        'as' => 'user.index', 'uses' => UserController::class .'@index'
-    ]);
-    Route::get('/user/cabinet', [
-        'as' => 'user.cabinet', 'uses' => UserController::class .'@cabinet'
-    ]);
-    Route::post('/user/login', [
-        'as' => 'user.login', 'uses' => UserController::class .'@authenticate'
-    ]);
-    Route::get('/user/logout', [
-        'as' => 'user.logout', 'uses' => UserController::class .'@logout'
-    ]);
-    Route::post('/user/edit', [
-        'as' => 'user.edit', 'uses' => UserController::class .'@updateProfile'
-    ]);
+    Route::get('password/reset', 'Larrock\ComponentUsers\UsersController@showPasswordRequestForm')->name('password.request');
+    Route::post('password/email', 'Larrock\ComponentUsers\UsersController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Larrock\ComponentUsers\UsersController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.post');
 });
 
 Route::group(['prefix' => 'admin', 'middleware'=> ['web', 'level:2', 'LarrockAdminMenu', 'SaveAdminPluginsData', 'SiteSearchAdmin']], function(){
