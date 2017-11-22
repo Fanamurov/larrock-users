@@ -1,6 +1,6 @@
 <div class="block-login">
     <p class="uk-h2">Авторизация</p>
-    <form id="form-login" class="uk-form uk-form-stacked validate" method="POST" action="/user/login">
+    <form id="form-login" class="uk-form uk-form-stacked validate" method="POST" action="login">
         {!! csrf_field() !!}
 
         <div class="uk-form-row">

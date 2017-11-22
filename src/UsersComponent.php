@@ -38,7 +38,7 @@ class UsersComponent extends Component
             ->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
 
         $row = new FormInput('name', 'Name');
-        $this->rows['name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setValid('required');
+        $this->rows['name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
 
         $row = new FormInput('first_name', 'Имя');
         $this->rows['first_name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
