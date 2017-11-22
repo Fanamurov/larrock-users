@@ -32,6 +32,7 @@ class UsersController extends Controller{
             \View::share('ykassa', config('yandex_kassa'));
         }
         LarrockUsers::shareConfig();
+        $this->middleware(LarrockUsers::combineFrontMiddlewares());
     }
 
     public function index()
