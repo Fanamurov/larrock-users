@@ -31,34 +31,34 @@ class UsersComponent extends Component
     {
         $row = new FormInput('email', 'Email/login');
         $this->rows['email'] = $row->setValid('email|min:4|required|unique:users,email,:id')
-            ->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setInTableAdmin();
+            ->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setInTableAdmin()->setFillable();
 
         $row = new FormPassword('password', 'Пароль');
         $this->rows['password'] = $row->setValid('min:5|required')
-            ->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+            ->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormInput('name', 'Name');
-        $this->rows['name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+        $this->rows['name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormInput('first_name', 'Имя');
-        $this->rows['first_name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+        $this->rows['first_name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormInput('last_name', 'Фамилия');
-        $this->rows['last_name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+        $this->rows['last_name'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormInput('fio', 'ФИО');
-        $this->rows['fio'] = $row->setInTableAdmin()->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+        $this->rows['fio'] = $row->setInTableAdmin()->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormInput('tel', 'Телефон');
-        $this->rows['tel'] = $row->setInTableAdmin()->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4');
+        $this->rows['tel'] = $row->setInTableAdmin()->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
         $row = new FormTagsRole('role', 'Роль');
         $this->rows['role'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')
             ->setConnect(Roles::class, 'role')
-            ->setAttached()->setValid('required')->setMaxItems(1);
+            ->setAttached()->setValid('required')->setMaxItems(1)->setFillable();
 
         $row = new FormTextarea('address', 'Адрес');
-        $this->rows['address'] = $row;
+        $this->rows['address'] = $row->setFillable();
 
         return $this;
     }

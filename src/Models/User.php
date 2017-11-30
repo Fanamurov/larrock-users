@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Larrock\Core\Component;
 use Larrock\Core\Traits\GetFilesAndImages;
+use Larrock\Core\Traits\GetLink;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 use Larrock\ComponentUsers\Roles\Traits\HasRoleAndPermission;
@@ -33,34 +34,34 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $remember_token
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models wherePermissions($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereLastLogin($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereFirstName($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereLastName($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User wherePermissions($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereLastLogin($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereFirstName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereLastName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereRememberToken($value)
  * @mixin \Eloquent
  * @property string $name
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $unreadNotifications
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereName($value)
  * @property string $fio
  * @property string $address
  * @property string $tel
- * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Models\Orders[] $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Models\Orders $orders
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Media[] $media
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereFio($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereAddress($value)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models whereTel($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereFio($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereAddress($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereTel($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Role[] $role
  * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Role[] $roles
  * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Roles\Models\Permission[] $userPermissions
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
- * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMediaConversions
 {
@@ -73,11 +74,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     use HasMediaTrait;
     use SearchableTrait;
     use GetFilesAndImages;
+    use GetLink;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->fillable(LarrockUsers::addFillableUserRows(['first_name', 'last_name', 'email', 'password', 'name', 'fio', 'address', 'tel']));
+        $this->fillable(LarrockUsers::addFillableUserRows([]));
         $this->table = LarrockUsers::getConfig()->table;
         $this->config = LarrockUsers::getConfig();
     }
