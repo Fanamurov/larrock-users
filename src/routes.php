@@ -14,6 +14,22 @@ Route::post('password/email', 'Larrock\ComponentUsers\UsersController@sendResetL
 Route::get('password/reset/{token}', 'Larrock\ComponentUsers\UsersController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.post');
 
-Route::group(['prefix' => 'admin', 'middleware'=> ['web', 'level:2', 'LarrockAdminMenu', 'SaveAdminPluginsData', 'SiteSearchAdmin']], function(){
+Route::group(['prefix' => 'admin'], function(){
     Route::resource('users', 'Larrock\ComponentUsers\AdminUsersController');
+});
+
+Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.index', function($breadcrumbs){
+    $breadcrumbs->push(LarrockUsers::getTitle(), '/admin/'. LarrockUsers::getName());
+});
+
+Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
+    $breadcrumbs->push('Создание');
+});
+
+Breadcrumbs::register('admin.users.edit', function($breadcrumbs, $data)
+{
+    $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
+    $breadcrumbs->push($data->email);
 });

@@ -3,10 +3,7 @@
 namespace Larrock\ComponentUsers;
 
 use Larrock\Core\Component;
-//use Ultraware\Roles\Models\Role;
-use Breadcrumbs;
 use Illuminate\Http\Request;
-
 use Illuminate\Routing\Controller;
 use JsValidator;
 use Validator;
@@ -20,12 +17,9 @@ class AdminUsersController extends Controller
 {
     public function __construct()
     {
-        $this->config = LarrockUsers::shareConfig();
-
+        $this->middleware(LarrockUsers::combineAdminMiddlewares());
+        LarrockUsers::shareConfig();
         \Config::set('breadcrumbs.view', 'larrock::admin.breadcrumb.breadcrumb');
-        Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.index', function($breadcrumbs){
-            $breadcrumbs->push(LarrockUsers::getTitle(), '/admin/'. LarrockUsers::getName());
-        });
     }
 
     /**
@@ -53,12 +47,6 @@ class AdminUsersController extends Controller
     public function create()
     {
         $data['app'] = LarrockUsers::tabbable(NULL);
-        Breadcrumbs::register('admin.'. LarrockUsers::getName() .'.create', function($breadcrumbs)
-        {
-            $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
-            $breadcrumbs->push('Создание');
-        });
-
         return view('larrock::admin.admin-builder.create', $data);
     }
 
@@ -103,12 +91,6 @@ class AdminUsersController extends Controller
 
         $validator = JsValidator::make(Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
         View::share('validator', $validator);
-
-        Breadcrumbs::register('admin.users.edit', function($breadcrumbs, $data)
-        {
-            $breadcrumbs->parent('admin.'. LarrockUsers::getName() .'.index');
-            $breadcrumbs->push($data->email);
-        });
         return view('larrock::admin.admin-builder.edit', $data);
     }
 
