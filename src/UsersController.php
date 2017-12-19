@@ -45,7 +45,7 @@ class UsersController extends Controller{
 
     public function showLoginForm()
     {
-        return view('larrock::front.auth.login-register');
+        return view(config('larrock.views.auth.showLoginForm', 'larrock::front.auth.login-register'));
     }
 
     /**
@@ -154,7 +154,7 @@ class UsersController extends Controller{
                 ->where('cost_max', '>', $data['user']->cart->sum('cost'))->first();
         }
 
-        return view('larrock::front.user.cabinet', $data);
+        return view(config('larrock.views.user.cabinet', 'larrock::front.user.cabinet'), $data);
     }
 
     /**
@@ -164,12 +164,12 @@ class UsersController extends Controller{
      */
     public function showPasswordRequestForm()
     {
-        return view('larrock::front.auth.passwords.email');
+        return view(config('larrock.views.auth.showPasswordRequestForm', 'larrock::front.auth.passwords.email'));
     }
 
     public function showResetForm(Request $request, $token = null)
     {
-        return view('larrock::front.auth.passwords.reset')->with(
+        return view(config('larrock.views.auth.showResetForm', 'larrock::front.auth.passwords.reset'))->with(
             ['token' => $token, 'email' => $request->email]
         );
     }
