@@ -6,6 +6,7 @@ use Larrock\Core\Component;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use JsValidator;
+use Larrock\Core\Traits\ShareMethods;
 use Validator;
 use Redirect;
 use View;
@@ -15,8 +16,11 @@ use Larrock\ComponentUsers\Facades\LarrockUsers;
 
 class AdminUsersController extends Controller
 {
+    use ShareMethods;
+
     public function __construct()
     {
+        $this->shareMethods();
         $this->middleware(LarrockUsers::combineAdminMiddlewares());
         LarrockUsers::shareConfig();
         \Config::set('breadcrumbs.view', 'larrock::admin.breadcrumb.breadcrumb');
