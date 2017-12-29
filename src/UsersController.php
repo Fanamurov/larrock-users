@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
+use Larrock\ComponentCart\Facades\LarrockCart;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
@@ -30,6 +31,7 @@ class UsersController extends Controller{
 
         if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')) {
             \View::share('ykassa', config('yandex_kassa'));
+            \View::share('config_cart', LarrockCart::getConfig());
         }
         LarrockUsers::shareConfig();
         $this->middleware(LarrockUsers::combineFrontMiddlewares());
