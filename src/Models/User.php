@@ -68,7 +68,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * @var $this Component
      */
-    public $config;
+    protected $config;
 
     use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
     use HasMediaTrait;
