@@ -105,6 +105,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password', 'remember_token',
     ];
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     public function role()
     {
         return $this->belongsToMany(config('larrock-roles.models.role'), 'role_user', 'user_id', 'role_id');
