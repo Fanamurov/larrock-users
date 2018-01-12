@@ -39,6 +39,7 @@ class VerifyPermission
             return $next($request);
         }
 
+        \Session::push('message.danger', 'Не достаточно прав для выполнения операции');
         throw new PermissionDeniedException($permission);
     }
 }

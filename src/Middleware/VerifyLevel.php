@@ -5,7 +5,7 @@ namespace Larrock\ComponentUsers\Roles\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Ultraware\Roles\Exceptions\LevelDeniedException;
+use Larrock\ComponentUsers\Roles\Exceptions\LevelDeniedException;
 
 class VerifyLevel
 {
@@ -39,6 +39,8 @@ class VerifyLevel
             return $next($request);
         }
 
-        throw new LevelDeniedException($level);
+        \Session::push('message.danger', 'Не достаточно прав для выполнения операции');
+        return redirect()->to('/user');
+        //throw new LevelDeniedException($level);
     }
 }
