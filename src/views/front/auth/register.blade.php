@@ -40,6 +40,10 @@
         </div>
 
         <div class="uk-form-row">
+            <small>Регистрируясь вы соглашаетесь с <a href="/privacy_policy.docx" target="_blank">политикой обработки персональных данных</a>.</small>
+        </div>
+
+        <div class="uk-form-row">
             <input type="hidden" name="page" value="{{ Request::get('page') }}">
             <button type="submit" class="uk-button uk-button-large uk-width-1-1">
                 <i class="uk-icon-user"></i> Зарегистрироваться
