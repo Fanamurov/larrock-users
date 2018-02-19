@@ -2,12 +2,12 @@
 
 namespace Larrock\ComponentUsers;
 
+use Larrock\ComponentUsers\Roles\Models\Role;
 use Larrock\Core\Component;
 use Larrock\Core\Helpers\FormBuilder\FormInput;
 use Larrock\Core\Helpers\FormBuilder\FormPassword;
-use Larrock\Core\Helpers\FormBuilder\FormTagsRole;
+use Larrock\Core\Helpers\FormBuilder\FormTags;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
-use Larrock\ComponentUsers\Models\Roles;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Larrock\ComponentUsers\Models\User;
 
@@ -20,11 +20,6 @@ class UsersComponent extends Component
         $this->description = 'Зарегистрированные пользователи на сайте';
         $this->model = \config('larrock.models.users', User::class);
         $this->addRows()->isSearchable();
-    }
-
-    public function config()
-    {
-        return $this;
     }
 
     protected function addRows()
@@ -52,10 +47,10 @@ class UsersComponent extends Component
         $row = new FormInput('tel', 'Телефон');
         $this->rows['tel'] = $row->setInTableAdmin()->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')->setFillable();
 
-        $row = new FormTagsRole('role', 'Роль');
+        $row = new FormTags('role', 'Роль');
         $this->rows['role'] = $row->setCssClassGroup('uk-width-1-2 uk-width-medium-1-3 uk-width-large-1-4')
-            ->setConnect(Roles::class, 'role')
-            ->setAttached()->setValid('required')->setMaxItems(1);
+            ->setModels(User::class, Role::class)->setMaxItems(1)
+            ->setValid('required')->setTitleRow('slug');
 
         $row = new FormTextarea('address', 'Адрес');
         $this->rows['address'] = $row->setFillable();
