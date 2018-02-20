@@ -13,18 +13,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $permissions
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles wherePermissions($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles find($value)
- * @property-read \App\Models\Users $user
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles wherePermissions($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles find($value)
+ * @property-read \Larrock\ComponentUsers\Models\Users $user
  * @property string $description
  * @property integer $level
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Roles whereLevel($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereLevel($value)
  * @mixin \Eloquent
  */
 class Roles extends Model

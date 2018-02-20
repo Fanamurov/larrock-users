@@ -10,6 +10,7 @@ use Larrock\Core\Helpers\FormBuilder\FormTags;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
 use Larrock\ComponentUsers\Facades\LarrockUsers;
 use Larrock\ComponentUsers\Models\User;
+use Cache;
 
 class UsersComponent extends Component
 {
@@ -60,7 +61,7 @@ class UsersComponent extends Component
 
     public function renderAdminMenu()
     {
-        $count = \Cache::remember('count-data-admin-'. LarrockUsers::getName(), 1440, function(){
+        $count = Cache::rememberForever('count-data-admin-'. LarrockUsers::getName(), function(){
             return LarrockUsers::getModel()->count(['id']);
         });
         return view('larrock::admin.sectionmenu.types.default', ['count' => $count, 'app' => LarrockUsers::getConfig(), 'url' => '/admin/'. LarrockUsers::getName()]);

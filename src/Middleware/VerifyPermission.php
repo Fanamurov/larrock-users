@@ -5,18 +5,15 @@ namespace Larrock\ComponentUsers\Roles\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Ultraware\Roles\Exceptions\PermissionDeniedException;
+use Larrock\ComponentUsers\Roles\Exceptions\PermissionDeniedException;
 
 class VerifyPermission
 {
-    /**
-     * @var Guard
-     */
+    /** @var Guard */
     protected $auth;
 
     /**
      * Create a new filter instance.
-     *
      * @param Guard $auth
      */
     public function __construct(Guard $auth)
@@ -26,12 +23,11 @@ class VerifyPermission
 
     /**
      * Handle an incoming request.
-     *
      * @param Request $request
      * @param \Closure $next
      * @param int|string $permission
      * @return mixed
-     * @throws \Ultraware\Roles\Exceptions\PermissionDeniedException
+     * @throws \Larrock\ComponentUsers\Roles\Exceptions\PermissionDeniedException
      */
     public function handle($request, Closure $next, $permission)
     {

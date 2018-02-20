@@ -5,18 +5,15 @@ namespace Larrock\ComponentUsers\Roles\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Ultraware\Roles\Exceptions\RoleDeniedException;
+use Larrock\ComponentUsers\Roles\Exceptions\RoleDeniedException;
 
 class VerifyRole
 {
-    /**
-     * @var Guard
-     */
+    /** @var Guard */
     protected $auth;
 
     /**
      * Create a new filter instance.
-     *
      * @param Guard $auth
      */
     public function __construct(Guard $auth)
@@ -26,12 +23,11 @@ class VerifyRole
 
     /**
      * Handle an incoming request.
-     *
      * @param Request $request
      * @param \Closure $next
      * @param int|string $role
      * @return mixed
-     * @throws RoleDeniedException
+     * @throws \Larrock\ComponentUsers\Roles\Exceptions\RoleDeniedException
      */
     public function handle($request, Closure $next, $role)
     {

@@ -52,6 +52,7 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  * @property string $fio
  * @property string $address
  * @property string $tel
+ * @property mixed $config
  * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Models\Orders $orders
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Media[] $media
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereFio($value)
@@ -65,9 +66,7 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMediaConversions
 {
-    /**
-     * @var $this Component
-     */
+    /** @var $this Component */
     protected $config;
 
     use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
@@ -80,7 +79,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         parent::__construct($attributes);
         $this->fillable(LarrockUsers::addFillableUserRows([]));
-        $this->table = LarrockUsers::getConfig()->table;
+        $this->table = LarrockUsers::getTable();
         $this->config = LarrockUsers::getConfig();
     }
 
