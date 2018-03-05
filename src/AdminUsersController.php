@@ -10,7 +10,7 @@ use Larrock\Core\Traits\ShareMethods;
 use Validator;
 use Redirect;
 use View;
-use Larrock\ComponentUsers\Facades\LarrockUsers;
+use LarrockUsers;
 
 /* https://github.com/romanbican/roles */
 
