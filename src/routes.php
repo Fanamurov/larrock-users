@@ -12,7 +12,7 @@ Route::get('/cabinet', 'Larrock\ComponentUsers\UsersController@cabinet')->name('
 Route::get('password/reset', 'Larrock\ComponentUsers\UsersController@showPasswordRequestForm')->name('password.request');
 Route::post('password/email', 'Larrock\ComponentUsers\UsersController@sendResetLinkEmail')->name('password.email');
 Route::get('password/reset/{token}', 'Larrock\ComponentUsers\UsersController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.post');
+Route::post('password/reset', 'Larrock\ComponentUsers\ResetPasswordController@reset')->name('password.reset.post');
 
 Route::group(['prefix' => 'admin'], function(){
     Route::resource('users', 'Larrock\ComponentUsers\AdminUsersController');

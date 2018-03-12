@@ -1,8 +1,8 @@
 <?php
 namespace Larrock\ComponentUsers\Models;
 
-use Larrock\ComponentCart\Facades\LarrockCart;
-use Larrock\ComponentUsers\Facades\LarrockUsers;
+use LarrockCart;
+use LarrockUsers;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -53,7 +53,6 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  * @property string $address
  * @property string $tel
  * @property mixed $config
- * @property-read \Illuminate\Database\Eloquent\Collection|\Larrock\ComponentUsers\Models\Orders $orders
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Media[] $media
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereFio($value)
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereAddress($value)
