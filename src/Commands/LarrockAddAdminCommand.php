@@ -70,7 +70,11 @@ class LarrockAddAdminCommand extends Command
         $first_user->last_name = 'Larrock';
         $first_user->fio = 'Admin Larrock';
         $first_user->save();
-        $first_user->attachRole(1);
+        
+        DB::table('role_user')->insert([
+            'role_id' => 1,
+            'user_id' => 1
+        ]);
 
         $this->info('Admin user created successfully');
         $this->info('Login/email: '. $email);
