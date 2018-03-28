@@ -18,8 +18,7 @@ use Nicolaslopezj\Searchable\SearchableTrait;
 use Larrock\ComponentUsers\Roles\Traits\HasRoleAndPermission;
 use Larrock\ComponentUsers\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
  * Larrock\ComponentUsers\Models
@@ -53,7 +52,7 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  * @property string $address
  * @property string $tel
  * @property mixed $config
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Media[] $media
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereFio($value)
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereAddress($value)
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User whereTel($value)
@@ -63,16 +62,12 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\User searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
  */
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMediaConversions
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, HasRoleAndPermissionContract, HasMedia
 {
     /** @var $this Component */
     protected $config;
 
-    use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable;
-    use HasMediaTrait;
-    use SearchableTrait;
-    use GetFilesAndImages;
-    use GetLink;
+    use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable, SearchableTrait, GetFilesAndImages,GetLink;
 
     public function __construct(array $attributes = [])
     {
