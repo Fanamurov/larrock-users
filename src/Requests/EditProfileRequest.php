@@ -23,12 +23,12 @@ class EditProfileRequest extends FormRequest
      */
     public function rules()
     {
-		return [
-			'email' => 'required|email',
-			'fio' => 'required',
-			'password' => 'required_with:old-password',
-			'tel' => 'required',
-			'address' => 'required',
-		];
+        return [
+            'email' => 'required|email',
+            'fio' => 'required',
+            'password' => 'required_with:old-password',
+            'tel' => 'required',
+            'address' => 'required',
+        ];
     }
 }

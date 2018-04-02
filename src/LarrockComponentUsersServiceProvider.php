@@ -3,10 +3,10 @@
 namespace Larrock\ComponentUsers;
 
 use Illuminate\Support\ServiceProvider;
-use Larrock\ComponentUsers\Commands\LarrockAddAdminCommand;
-use Larrock\ComponentUsers\Roles\Middleware\VerifyLevel;
-use Larrock\ComponentUsers\Roles\Middleware\VerifyPermission;
 use Larrock\ComponentUsers\Roles\Middleware\VerifyRole;
+use Larrock\ComponentUsers\Roles\Middleware\VerifyLevel;
+use Larrock\ComponentUsers\Commands\LarrockAddAdminCommand;
+use Larrock\ComponentUsers\Roles\Middleware\VerifyPermission;
 
 class LarrockComponentUsersServiceProvider extends ServiceProvider
 {
@@ -22,11 +22,11 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->publishes([
-            __DIR__.'/../views' => base_path('resources/views/vendor/larrock')
+            __DIR__.'/../views' => base_path('resources/views/vendor/larrock'),
         ], 'views');
 
         $this->publishes([
-            __DIR__ . '/../config/larrock-roles.php' => config_path('larrock-roles.php'),
+            __DIR__.'/../config/larrock-roles.php' => config_path('larrock-roles.php'),
         ], 'config');
 
         $this->registerBladeExtensions();
@@ -39,18 +39,19 @@ class LarrockComponentUsersServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['router']->aliasMiddleware('level',VerifyLevel::class);
+        $this->app['router']->aliasMiddleware('level', VerifyLevel::class);
         $this->app['router']->aliasMiddleware('role', VerifyRole::class);
         $this->app['router']->aliasMiddleware('permission', VerifyPermission::class);
 
-        $this->app->singleton('larrockusers', function() {
+        $this->app->singleton('larrockusers', function () {
             $class = config('larrock.components.users', UsersComponent::class);
+
             return new $class;
         });
 
         $this->app->bind('command.larrock:addAdmin', LarrockAddAdminCommand::class);
         $this->commands([
-            'command.larrock:addAdmin'
+            'command.larrock:addAdmin',
         ]);
     }
 

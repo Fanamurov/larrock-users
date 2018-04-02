@@ -1,29 +1,27 @@
 <?php
+
 namespace Larrock\ComponentUsers\Models;
 
 use LarrockCart;
 use LarrockUsers;
-use Illuminate\Notifications\Notifiable;
+use Larrock\Core\Component;
+use Larrock\Core\Traits\GetLink;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Larrock\Core\Traits\GetFilesAndImages;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Nicolaslopezj\Searchable\SearchableTrait;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Larrock\ComponentUsers\Roles\Traits\HasRoleAndPermission;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-
-use Larrock\Core\Component;
-use Larrock\Core\Traits\GetFilesAndImages;
-use Larrock\Core\Traits\GetLink;
-use Nicolaslopezj\Searchable\SearchableTrait;
-
-use Larrock\ComponentUsers\Roles\Traits\HasRoleAndPermission;
 use Larrock\ComponentUsers\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-
 /**
- * Larrock\ComponentUsers\Models
+ * Larrock\ComponentUsers\Models.
  *
- * @property integer $id
+ * @property int $id
  * @property string $email
  * @property string $password
  * @property string $permissions
@@ -86,7 +84,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'users.fio' => 7,
             'users.tel' => 5,
             'users.address' => 2,
-        ]
+        ],
     ];
 
     /**

@@ -2,10 +2,10 @@
 
 namespace Larrock\ComponentUsers\Roles\Middleware;
 
-use Closure;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
 use Cache;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Guard;
 
 class VerifyLevel
 {
@@ -30,8 +30,8 @@ class VerifyLevel
      */
     public function handle($request, Closure $next, $level)
     {
-        if ($this->auth->check()){
-            $cache_key = sha1('userLevel'. $this->auth->id());
+        if ($this->auth->check()) {
+            $cache_key = sha1('userLevel'.$this->auth->id());
             $userLevel = Cache::rememberForever($cache_key, function () {
                 return $this->auth->user()->level();
             });
@@ -41,6 +41,7 @@ class VerifyLevel
         }
 
         \Session::push('message.danger', 'Не достаточно прав для выполнения операции');
+
         return redirect()->to('/user');
         //throw new LevelDeniedException($level);
     }

@@ -3,8 +3,8 @@
 namespace Larrock\ComponentUsers\Roles\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Guard;
 use Larrock\ComponentUsers\Roles\Exceptions\PermissionDeniedException;
 
 class VerifyPermission

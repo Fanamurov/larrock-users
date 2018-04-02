@@ -2,15 +2,15 @@
 
 namespace Larrock\ComponentUsers;
 
-use Larrock\ComponentUsers\Roles\Models\Role;
+use Cache;
+use LarrockUsers;
 use Larrock\Core\Component;
+use Larrock\ComponentUsers\Models\User;
+use Larrock\ComponentUsers\Roles\Models\Role;
+use Larrock\Core\Helpers\FormBuilder\FormTags;
 use Larrock\Core\Helpers\FormBuilder\FormInput;
 use Larrock\Core\Helpers\FormBuilder\FormPassword;
-use Larrock\Core\Helpers\FormBuilder\FormTags;
 use Larrock\Core\Helpers\FormBuilder\FormTextarea;
-use LarrockUsers;
-use Larrock\ComponentUsers\Models\User;
-use Cache;
 
 class UsersComponent extends Component
 {
@@ -61,10 +61,11 @@ class UsersComponent extends Component
 
     public function renderAdminMenu()
     {
-        $count = Cache::rememberForever('count-data-admin-'. LarrockUsers::getName(), function(){
+        $count = Cache::rememberForever('count-data-admin-'.LarrockUsers::getName(), function () {
             return LarrockUsers::getModel()->count(['id']);
         });
+
         return view('larrock::admin.sectionmenu.types.default', ['count' => $count, 'app' => LarrockUsers::getConfig(),
-            'url' => '/admin/'. LarrockUsers::getName()]);
+            'url' => '/admin/'.LarrockUsers::getName(), ]);
     }
 }

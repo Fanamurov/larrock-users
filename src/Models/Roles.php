@@ -5,9 +5,9 @@ namespace Larrock\ComponentUsers\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Roles
+ * App\Models\Roles.
  *
- * @property integer $id
+ * @property int $id
  * @property string $slug
  * @property string $name
  * @property string $permissions
@@ -22,19 +22,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles find($value)
  * @property-read \Larrock\ComponentUsers\Models\Users $user
  * @property string $description
- * @property integer $level
+ * @property int $level
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereDescription($value)
  * @method static \Illuminate\Database\Query\Builder|\Larrock\ComponentUsers\Models\Roles whereLevel($value)
  * @mixin \Eloquent
  */
 class Roles extends Model
 {
-	protected $table = 'roles';
+    protected $table = 'roles';
 
-	protected $fillable = ['slug', 'name', 'permission'];
+    protected $fillable = ['slug', 'name', 'permission'];
 
-	public function user()
-	{
-		return $this->belongsTo(\LarrockUsers::getModel());
-	}
+    public function user()
+    {
+        return $this->belongsTo(\LarrockUsers::getModel());
+    }
 }

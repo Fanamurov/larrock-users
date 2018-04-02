@@ -13,5 +13,4 @@ class LarrockUsers extends Facade
     {
         return 'larrockusers';
     }
-
 }

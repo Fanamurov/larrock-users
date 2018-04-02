@@ -3,9 +3,9 @@
 namespace Larrock\ComponentUsers\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Larrock\ComponentUsers\Roles\Contracts\PermissionHasRelations as PermissionHasRelationsContract;
-use Larrock\ComponentUsers\Roles\Traits\PermissionHasRelations;
 use Larrock\ComponentUsers\Roles\Traits\Slugable;
+use Larrock\ComponentUsers\Roles\Traits\PermissionHasRelations;
+use Larrock\ComponentUsers\Roles\Contracts\PermissionHasRelations as PermissionHasRelationsContract;
 
 class Permission extends Model implements PermissionHasRelationsContract
 {
