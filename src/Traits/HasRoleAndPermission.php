@@ -2,14 +2,14 @@
 
 namespace Larrock\ComponentUsers\Roles\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Larrock\ComponentUsers\Roles\Models\Permission;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Larrock\ComponentUsers\Roles\Models\Role;
+use Larrock\ComponentUsers\Roles\Models\Permission;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasRoleAndPermission
 {
@@ -44,7 +44,7 @@ trait HasRoleAndPermission
      */
     public function getRoles()
     {
-        return (!$this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        return (! $this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
     }
 
     /**
@@ -60,7 +60,7 @@ trait HasRoleAndPermission
             return $this->pretend('hasRole');
         }
 
-        if (!$all) {
+        if (! $all) {
             return $this->hasOneRole($role);
         }
 
@@ -93,7 +93,7 @@ trait HasRoleAndPermission
     public function hasAllRoles($role)
     {
         foreach ($this->getArrayFrom($role) as $role) {
-            if (!$this->checkRole($role)) {
+            if (! $this->checkRole($role)) {
                 return false;
             }
         }
@@ -126,6 +126,7 @@ trait HasRoleAndPermission
             return true;
         }
         $this->roles = null;
+
         return $this->roles()->attach($role);
     }
 
@@ -186,7 +187,7 @@ trait HasRoleAndPermission
     {
         $permissionModel = app(config('larrock-roles.models.permission'));
 
-        if (!$permissionModel instanceof Model) {
+        if (! $permissionModel instanceof Model) {
             throw new InvalidArgumentException('[roles.models.permission] must be an instance of \Illuminate\Database\Eloquent\Model');
         }
 
@@ -216,7 +217,7 @@ trait HasRoleAndPermission
      */
     public function getPermissions()
     {
-        return (!$this->permissions) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
+        return (! $this->permissions) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
     }
 
     /**
@@ -232,7 +233,7 @@ trait HasRoleAndPermission
             return $this->pretend('hasPermission');
         }
 
-        if (!$all) {
+        if (! $all) {
             return $this->hasOnePermission($permission);
         }
 
@@ -265,7 +266,7 @@ trait HasRoleAndPermission
     public function hasAllPermissions($permission)
     {
         foreach ($this->getArrayFrom($permission) as $permission) {
-            if (!$this->checkPermission($permission)) {
+            if (! $this->checkPermission($permission)) {
                 return false;
             }
         }
@@ -340,6 +341,7 @@ trait HasRoleAndPermission
             return true;
         }
         $this->permissions = null;
+
         return $this->userPermissions()->attach($permission);
     }
 
@@ -399,7 +401,7 @@ trait HasRoleAndPermission
      */
     private function pretend($option)
     {
-        return (bool) config('larrock-roles.pretend.options.' . $option);
+        return (bool) config('larrock-roles.pretend.options.'.$option);
     }
 
     /**
@@ -410,7 +412,7 @@ trait HasRoleAndPermission
      */
     private function getArrayFrom($argument)
     {
-        return (!is_array($argument)) ? preg_split('/ ?[,|] ?/', $argument) : $argument;
+        return (! is_array($argument)) ? preg_split('/ ?[,|] ?/', $argument) : $argument;
     }
 
     public function callMagic($method, $parameters)

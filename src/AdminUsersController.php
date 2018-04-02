@@ -2,15 +2,15 @@
 
 namespace Larrock\ComponentUsers;
 
+use View;
+use Redirect;
+use Validator;
+use JsValidator;
+use LarrockUsers;
 use Larrock\Core\Component;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use JsValidator;
 use Larrock\Core\Traits\ShareMethods;
-use Validator;
-use Redirect;
-use View;
-use LarrockUsers;
 
 /* https://github.com/romanbican/roles */
 
@@ -35,12 +35,13 @@ class AdminUsersController extends Controller
     {
         $with = ['role'];
         $enable_cart = null;
-        if(file_exists(base_path(). '/vendor/fanamurov/larrock-cart')){
+        if (file_exists(base_path().'/vendor/fanamurov/larrock-cart')) {
             $with[] = 'cart';
             $enable_cart = true;
         }
         $users = LarrockUsers::getModel()->with($with)->paginate(15);
-        return view('larrock::admin.users.index', array('data' => $users, 'enable_cart' => $enable_cart));
+
+        return view('larrock::admin.users.index', ['data' => $users, 'enable_cart' => $enable_cart]);
     }
 
     /**
@@ -50,7 +51,8 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        $data['app'] = LarrockUsers::tabbable(NULL);
+        $data['app'] = LarrockUsers::tabbable(null);
+
         return view('larrock::admin.admin-builder.create', $data);
     }
 
@@ -63,24 +65,26 @@ class AdminUsersController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getValid()));
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
 
         $data = LarrockUsers::getModel()->fill($request->all());
         $data->password = bcrypt($request->get('password'));
-        if(empty($data->name)){
+        if (empty($data->name)) {
             $data->name = '';
         }
 
-        if($data->save()){
+        if ($data->save()) {
             $data->attachRole((int) $request->get('role'));
             \Cache::flush();
-            \Session::push('message.success', 'Пользователь '. $request->input('email') .' добавлен');
-            return Redirect::to('/admin/'. LarrockUsers::getName() .'/'. $data->id .'/edit')->withInput();
+            \Session::push('message.success', 'Пользователь '.$request->input('email').' добавлен');
+
+            return Redirect::to('/admin/'.LarrockUsers::getName().'/'.$data->id.'/edit')->withInput();
         }
 
-        \Session::push('message.danger', 'Пользователь '. $request->input('email') .' не добавлен');
+        \Session::push('message.danger', 'Пользователь '.$request->input('email').' не добавлен');
+
         return Redirect::to('/admin/users');
     }
 
@@ -97,6 +101,7 @@ class AdminUsersController extends Controller
 
         $validator = JsValidator::make(Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
         View::share('validator', $validator);
+
         return view('larrock::admin.admin-builder.edit', $data);
     }
 
@@ -110,7 +115,7 @@ class AdminUsersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
 
@@ -119,16 +124,16 @@ class AdminUsersController extends Controller
         $user->attachRole($request->get('role'));
 
         $submit = $request->all();
-        if($submit['password'] !== $user->password){
+        if ($submit['password'] !== $user->password) {
             $submit['password'] = bcrypt($submit['password']);
-        }else{
+        } else {
             unset($submit['password']);
         }
 
-        if($user->update($submit)){
+        if ($user->update($submit)) {
             \Session::push('message.success', 'Пользователь изменен');
             \Cache::flush();
-        }else{
+        } else {
             \Session::push('message.danger', 'Не удалось изменить пользователя');
         }
 
@@ -144,21 +149,22 @@ class AdminUsersController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        if($user = LarrockUsers::getModel()->whereId($id)->first()){
+        if ($user = LarrockUsers::getModel()->whereId($id)->first()) {
             $user->detachAllRoles();
 
-            if($user->delete()){
+            if ($user->delete()) {
                 \Session::push('message.success', 'Пользователь удален');
-            }else{
+            } else {
                 \Session::push('message.danger', 'Не удалось удалить пользователя');
             }
-        }else{
+        } else {
             \Session::push('message.danger', 'Такого пользователя больше нет');
         }
 
-        if($request->get('place') === 'material'){
-            return Redirect::to('/admin/'. LarrockUsers::getName());
+        if ($request->get('place') === 'material') {
+            return Redirect::to('/admin/'.LarrockUsers::getName());
         }
+
         return back();
     }
 }

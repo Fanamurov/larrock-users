@@ -2,9 +2,9 @@
 
 namespace Larrock\ComponentUsers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -40,9 +40,10 @@ class ResetPasswordController extends Controller
 
     public function redirectPath()
     {
-        if(auth()->user()->level() === 3) {
+        if (auth()->user()->level() === 3) {
             return '/admin';
         }
+
         return '/cabinet';
     }
 }

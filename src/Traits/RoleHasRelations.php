@@ -3,8 +3,8 @@
 namespace Larrock\ComponentUsers\Roles\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Larrock\ComponentUsers\Roles\Models\Permission;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait RoleHasRelations
 {
@@ -36,7 +36,7 @@ trait RoleHasRelations
      */
     public function attachPermission($permission)
     {
-        return (!$this->permissions()->get()->contains($permission)) ? $this->permissions()->attach($permission) : true;
+        return (! $this->permissions()->get()->contains($permission)) ? $this->permissions()->attach($permission) : true;
     }
 
     /**

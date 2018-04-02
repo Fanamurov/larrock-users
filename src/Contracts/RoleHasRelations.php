@@ -2,9 +2,9 @@
 
 namespace Larrock\ComponentUsers\Roles\Contracts;
 
+use Ultraware\Roles\Models\Permission;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Ultraware\Roles\Models\Permission;
 
 interface RoleHasRelations
 {

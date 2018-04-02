@@ -2,12 +2,12 @@
 
 namespace Larrock\ComponentUsers\Roles\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Larrock\ComponentUsers\Roles\Models\Permission;
 use Larrock\ComponentUsers\Roles\Models\Role;
+use Larrock\ComponentUsers\Roles\Models\Permission;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 interface HasRoleAndPermission
 {
