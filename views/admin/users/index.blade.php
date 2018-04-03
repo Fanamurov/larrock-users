@@ -19,29 +19,29 @@
         <table class="uk-table uk-table-striped uk-form">
             <thead>
             <tr>
-                <th width="20">ID</th>
+                <th width="20" class="uk-visible@s">ID</th>
                 @foreach($app->rows as $row)
                     @if($row->inTableAdmin || $row->inTableAdminEditable)
-                        <th style="width: 90px">{{ $row->title }}</th>
+                        <th style="width: 90px" class="@if($row->name !== 'email') uk-visible@s @endif">{{ $row->title }}</th>
                     @endif
                 @endforeach
                 @if($enable_cart)
-                    <th width="80">Заказы</th>
-                    <th width="120">Сумма покупок</th>
+                    <th width="80" class="uk-visible@s">Заказы</th>
+                    <th width="120" class="uk-visible@s">Сумма покупок</th>
                 @endif
-                <th width="80">Роль</th>
+                <th width="80" class="uk-visible@s">Роль</th>
                 <th width="70"></th>
-                <th width="90"></th>
+                <th width="90" class="uk-visible@s"></th>
             </tr>
             </thead>
             <tbody>
             @foreach($data as $data_value)
                 <tr>
-                    <td class="row-id">{{ $data_value->id }}</td>
+                    <td class="row-id uk-visible@s">{{ $data_value->id }}</td>
                     @foreach($app->rows as $row)
                         @if($row->inTableAdminEditable)
                             @if($row instanceof \Larrock\Core\Helpers\FormBuilder\FormCheckbox)
-                                <td class="row-active @if($row->name !== 'active') uk-hidden-small @endif">
+                                <td class="row-active @if($row->name !== 'email') uk-visible@s @endif">
                                     <div class="uk-button-group btn-group_switch_ajax" role="group" style="width: 100%">
                                         <button type="button" class="uk-button uk-button-primary uk-button-small @if($data_value->{$row->name} === 0) uk-button-outline @endif"
                                                 data-row_where="id" data-value_where="{{ $data_value->id }}" data-table="{{ $app->table }}"
@@ -52,7 +52,7 @@
                                     </div>
                                 </td>
                             @elseif($row instanceof \Larrock\Core\Helpers\FormBuilder\FormInput)
-                                <td class="uk-hidden-small">
+                                <td class="uk-visible@s">
                                     <input type="text" value="{{ $data_value->{$row->name} }}" name="{{ $row->name }}"
                                            class="ajax_edit_row form-control" data-row_where="id" data-value_where="{{ $data_value->id }}"
                                            data-table="{{ $app->table }}">
@@ -60,7 +60,7 @@
                             @endif
                         @endif
                         @if($row->inTableAdmin)
-                            <td class="uk-hidden-small">
+                            <td class="@if($row->name !== 'email') uk-visible@s @endif">
                                 @if($row->name === 'email')
                                     <a href="/admin/users/{{ $data_value->id }}/edit">{{ $data_value->{$row->name} }}</a>
                                 @else
@@ -70,10 +70,10 @@
                         @endif
                     @endforeach
                     @if($enable_cart)
-                        <td>
+                        <td class="uk-visible@s">
                             {{ \count($data_value->cart) }}
                         </td>
-                        <td>
+                        <td class="uk-visible@s">
                             @php($cost = 0)
                             @foreach($data_value->cart as $order)
                                 @php($cost += $order->cost)
@@ -81,7 +81,7 @@
                             <a data-uk-tooltip title="Перейти к заказам пользователя" target="_blank" href="/admin/cart?user_search={{ $data_value->email }}">{{ $cost }} руб.</a>
                         </td>
                     @endif
-                    <td>
+                    <td class="uk-visible@s">
                         @if(\count($data_value->role) > 0)
                             <span class="uk-label">{{ $data_value->role->first()->slug }}</span>
                         @else
@@ -91,7 +91,7 @@
                     <td>
                         <a href="/admin/users/{{ $data_value->id }}/edit" class="uk-button uk-button-default uk-button-small">Свойства</a>
                     </td>
-                    <td>
+                    <td class="uk-visible@s">
                         <form action="/admin/users/{{ $data_value->id }}" method="post">
                             <input name="_method" type="hidden" value="DELETE">
                             {{csrf_field()}}
