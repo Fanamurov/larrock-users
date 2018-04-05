@@ -7,10 +7,12 @@ use Redirect;
 use Validator;
 use JsValidator;
 use LarrockUsers;
-use Larrock\Core\Component;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Larrock\Core\Traits\ShareMethods;
+use Larrock\Core\Events\ComponentItemStored;
+use Larrock\Core\Events\ComponentItemUpdated;
+use Larrock\Core\Events\ComponentItemDestroyed;
 
 /* https://github.com/romanbican/roles */
 
@@ -18,11 +20,13 @@ class AdminUsersController extends Controller
 {
     use ShareMethods;
 
+    protected $config;
+
     public function __construct()
     {
         $this->shareMethods();
         $this->middleware(LarrockUsers::combineAdminMiddlewares());
-        LarrockUsers::shareConfig();
+        $this->config = LarrockUsers::shareConfig();
         \Config::set('breadcrumbs.view', 'larrock::admin.breadcrumb.breadcrumb');
     }
 
@@ -64,19 +68,20 @@ class AdminUsersController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getValid()));
-        if ($validator->fails()) {
-            return back()->withInput($request->except('password'))->withErrors($validator);
-        }
-
         $data = LarrockUsers::getModel()->fill($request->all());
         $data->password = bcrypt($request->get('password'));
         if (empty($data->name)) {
             $data->name = '';
         }
 
+        $validator = Validator::make($data->toArray(), $this->config->getValid());
+        if ($validator->fails()) {
+            return back()->withInput($request->except('password'))->withErrors($validator);
+        }
+
         if ($data->save()) {
             $data->attachRole((int) $request->get('role'));
+            event(new ComponentItemStored($this->config, $data, $request));
             \Cache::flush();
             \Session::push('message.success', 'Пользователь '.$request->input('email').' добавлен');
 
@@ -99,7 +104,7 @@ class AdminUsersController extends Controller
         $data['data'] = LarrockUsers::getModel()->whereId($id)->with('role')->first();
         $data['app'] = LarrockUsers::tabbable($data['data']);
 
-        $validator = JsValidator::make(Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
+        $validator = JsValidator::make($this->config->getValid($id));
         View::share('validator', $validator);
 
         return view('larrock::admin.admin-builder.edit', $data);
@@ -114,11 +119,6 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), Component::_valid_construct(LarrockUsers::getConfig(), 'update', $id));
-        if ($validator->fails()) {
-            return back()->withInput($request->except('password'))->withErrors($validator);
-        }
-
         $user = LarrockUsers::getModel()->whereId($id)->first();
         $user->detachAllRoles();
         $user->attachRole($request->get('role'));
@@ -130,7 +130,13 @@ class AdminUsersController extends Controller
             unset($submit['password']);
         }
 
+        $validator = Validator::make($user->toArray(), $this->config->getValid($id));
+        if ($validator->fails()) {
+            return back()->withInput($request->except('password'))->withErrors($validator);
+        }
+
         if ($user->update($submit)) {
+            event(new ComponentItemUpdated($this->config, $user, $request));
             \Session::push('message.success', 'Пользователь изменен');
             \Cache::flush();
         } else {
@@ -153,6 +159,7 @@ class AdminUsersController extends Controller
             $user->detachAllRoles();
 
             if ($user->delete()) {
+                event(new ComponentItemDestroyed($this->config, $user, $request));
                 \Session::push('message.success', 'Пользователь удален');
             } else {
                 \Session::push('message.danger', 'Не удалось удалить пользователя');
