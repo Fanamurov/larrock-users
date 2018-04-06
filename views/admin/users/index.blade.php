@@ -5,11 +5,11 @@
     <div class="container-head uk-margin-bottom">
         <div class="uk-grid">
             <div class="uk-width-expand">
-                {!! Breadcrumbs::render('admin.'. $app->name .'.index') !!}
+                {!! Breadcrumbs::render('admin.'. $package->name .'.index') !!}
             </div>
             <div class="uk-width-auto">
                 @if(isset($allowCreate))
-                    <a class="uk-button uk-button-primary" href="/admin/{{ $app->name }}/create">Добавить пользователя</a>
+                    <a class="uk-button uk-button-primary" href="/admin/{{ $package->name }}/create">Добавить пользователя</a>
                 @endif
             </div>
         </div>
@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th width="20" class="uk-visible@s">ID</th>
-                @foreach($app->rows as $row)
+                @foreach($package->rows as $row)
                     @if($row->inTableAdmin || $row->inTableAdminEditable)
                         <th style="width: 90px" class="@if($row->name !== 'email') uk-visible@s @endif">{{ $row->title }}</th>
                     @endif
@@ -38,16 +38,16 @@
             @foreach($data as $data_value)
                 <tr>
                     <td class="row-id uk-visible@s">{{ $data_value->id }}</td>
-                    @foreach($app->rows as $row)
+                    @foreach($package->rows as $row)
                         @if($row->inTableAdminEditable)
                             @if($row instanceof \Larrock\Core\Helpers\FormBuilder\FormCheckbox)
                                 <td class="row-active @if($row->name !== 'email') uk-visible@s @endif">
                                     <div class="uk-button-group btn-group_switch_ajax" role="group" style="width: 100%">
                                         <button type="button" class="uk-button uk-button-primary uk-button-small @if($data_value->{$row->name} === 0) uk-button-outline @endif"
-                                                data-row_where="id" data-value_where="{{ $data_value->id }}" data-table="{{ $app->table }}"
+                                                data-row_where="id" data-value_where="{{ $data_value->id }}" data-table="{{ $package->table }}"
                                                 data-row="active" data-value="1" style="width: 50%">on</button>
                                         <button type="button" class="uk-button uk-button-danger uk-button-small @if($data_value->{$row->name} === 1) uk-button-outline @endif"
-                                                data-row_where="id" data-value_where="{{ $data_value->id }}" data-table="{{ $app->table }}"
+                                                data-row_where="id" data-value_where="{{ $data_value->id }}" data-table="{{ $package->table }}"
                                                 data-row="active" data-value="0" style="width: 50%">off</button>
                                     </div>
                                 </td>
@@ -55,7 +55,7 @@
                                 <td class="uk-visible@s">
                                     <input type="text" value="{{ $data_value->{$row->name} }}" name="{{ $row->name }}"
                                            class="ajax_edit_row form-control" data-row_where="id" data-value_where="{{ $data_value->id }}"
-                                           data-table="{{ $app->table }}">
+                                           data-table="{{ $package->table }}">
                                 </td>
                             @endif
                         @endif
