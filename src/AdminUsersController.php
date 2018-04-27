@@ -130,7 +130,7 @@ class AdminUsersController extends Controller
             unset($submit['password']);
         }
 
-        $validator = Validator::make($user->toArray(), $this->config->getValid($id));
+        $validator = Validator::make($submit, $this->config->getValid($id));
         if ($validator->fails()) {
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
