@@ -20,7 +20,7 @@ class UsersComponent extends Component
         $this->title = 'Пользователи';
         $this->description = 'Зарегистрированные пользователи на сайте';
         $this->model = \config('larrock.models.users', User::class);
-        $this->addRows()->isSearchable();
+        $this->addRows()->isSearchable('name');
     }
 
     protected function addRows()

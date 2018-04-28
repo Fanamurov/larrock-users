@@ -2,6 +2,7 @@
 
 namespace Larrock\ComponentUsers\Models;
 
+use Larrock\Core\Traits\GetAdminLink;
 use LarrockCart;
 use LarrockUsers;
 use Larrock\Core\Component;
@@ -65,7 +66,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /** @var $this Component */
     protected $config;
 
-    use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable, SearchableTrait, GetFilesAndImages,GetLink;
+    use Authenticatable, CanResetPassword, HasRoleAndPermission, Notifiable, SearchableTrait, GetFilesAndImages, GetLink, GetAdminLink;
 
     public function __construct(array $attributes = [])
     {
