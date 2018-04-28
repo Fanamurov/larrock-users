@@ -2,12 +2,12 @@
 
 namespace Larrock\ComponentUsers\Models;
 
-use Larrock\Core\Traits\GetAdminLink;
 use LarrockCart;
 use LarrockUsers;
 use Larrock\Core\Component;
 use Larrock\Core\Traits\GetLink;
 use Illuminate\Auth\Authenticatable;
+use Larrock\Core\Traits\GetAdminLink;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Larrock\Core\Traits\GetFilesAndImages;
