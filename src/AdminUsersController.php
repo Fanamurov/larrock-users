@@ -74,7 +74,7 @@ class AdminUsersController extends Controller
             $data->name = '';
         }
 
-        $validator = Validator::make($data->toArray(), $this->config->getValid());
+        $validator = Validator::make($request->all(), $this->config->getValid());
         if ($validator->fails()) {
             return back()->withInput($request->except('password'))->withErrors($validator);
         }
